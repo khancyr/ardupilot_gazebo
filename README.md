@@ -37,18 +37,35 @@ Now launch a world file with a copter/rover/plane and ardupilot plugin, and it s
 
 ## HELP 
 
-launch cmd :  
+How to Launch :  
+Launch Ardupilot Software In the Loop Simulation for each vehicle.
+On new terminal, Launch Gazebo with basic demo world.
+
 ROVER
+
 ````
+On 1st Terminal(Launch Ardupilot SITL)
 sim_vehicle.py -v APMrover2 -f gazebo-rover  -m --mav10 --map --console -I0
+
+On 2nd Termianal(Launch Gazebo with demo Rover model)
+gazebo --verbose worlds/ (Please Add if there is one.)
+
 ````
 COPTER
 ````
+On 1st Terminal(Launch Ardupilot SITL)
 sim_vehicle.py -v ArduCopter -f gazebo-iris  -m --mav10 --map --console -I0
+
+On 2nd Terminal(Launch Gazebo with demo 3DR Iris model)
+gazebo --verbose worlds/iris_irlock_demo.world
 ````
 PLANE
 ````
+On 1st Terminal(Launch Ardupilot SITL)
 sim_vehicle.py -v ArduPlane -f gazebo-zephyr  -m --mav10 --map --console -I0
+
+On 2nd Terminal(Launch Gazebo with demo Zephyr flying wing model)
+gazebo --verbose worlds/zephyr_ardupilot_demo.world
 ````
 
 ### Missing libArduPilotPlugin.so  

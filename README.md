@@ -34,6 +34,17 @@ cmake ..
 make -j4
 sudo make install
 ````
+Set Path of Gazebo Models
+````
+echo 'export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/gazebo_models' >> ~/.bashrc
+source ~/.bashrc
+````
+
+Copying Demo Worlds to Gazebo
+````
+sudo cp -a ~/ardupilot_gazebo/gazebo_worlds/. /usr/share/gazebo-7/worlds
+````
+
 DONE !
 
 Now launch a world file with a copter/rover/plane and ardupilot plugin, and it should work! 
@@ -44,7 +55,6 @@ Now launch a world file with a copter/rover/plane and ardupilot plugin, and it s
 How to Launch :  
 Launch Ardupilot Software In the Loop Simulation for each vehicle.
 On new terminal, Launch Gazebo with basic demo world.
-
 ROVER
 
 ````
@@ -72,6 +82,16 @@ On 2nd Terminal(Launch Gazebo with demo Zephyr flying wing model)
 gazebo --verbose worlds/zephyr_ardupilot_demo.world
 ````
 
+In addition, you can use any GCS of Ardupilot
+if MAVProxy Developer GCS is uncomportable.
+Local connection with APMPlanner2 is automatic, and recommended.
+Download it here http://firmware.eu.ardupilot.org/Tools/APMPlanner/
+and launch it in terminal
+
+````
+apmplanner2
+````
+
 ### Missing libArduPilotPlugin.so  
 In case you see this message, check you have no error after sudo make install.  
 If no error use "ls" on the install path given to see if the plugin is really here.  
@@ -83,8 +103,7 @@ For Example
  cp /usr/lib/x86_64-linux-gnu/gazebo-7/plugins/libArduPilotPlugin.so /usr/lib/x86_64-linux-gnu/gazebo-7.0/plugins/ ).  
 ````
 
-I don't know why it can have path mistmatch ... but it could append if you install gazebo from sasc-gazebo-sitl .
-
+I don't know why it can have path mistmatch ... but it could append if you install gazebo 7
 
 ### Future(not activated yet)
 To use Gazebo gps, you must offset the heading of +90° as gazebo gps is NWU and ardupilot is NED 

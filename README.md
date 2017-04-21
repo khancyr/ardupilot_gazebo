@@ -21,7 +21,7 @@ For Gazebo 7
 sudo apt-get install libgazebo7-dev
 ````
 OR  
-For Gazeo 8
+For Gazebo 8
 ````
 sudo apt-get install libgazebo8-dev
 ````

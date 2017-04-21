@@ -40,7 +40,7 @@ echo 'export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/gazebo_models' >> ~/.bashrc
 source ~/.bashrc
 ````
 
-Copying Demo Worlds to Gazebo
+Copy Demo Worlds to Gazebo
 ````
 sudo cp -a ~/ardupilot_gazebo/gazebo_worlds/. /usr/share/gazebo-7/worlds
 ````

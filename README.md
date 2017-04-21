@@ -11,13 +11,17 @@ This assume that your are using Ubuntu 16.04
 
 ## Usage :
 I assume you already have Gazebo installed with ROS (or without).  
-If you don't have it yet, install ROS with sudo apt install ros-kinetic-desktop-full (follow instruction here http://wiki.ros.org/kinetic/Installation/Ubuntu).  
+If you don't have it yet, install ROS with sudo apt install ros-kinetic-desktop-full 
+(follow instruction here http://wiki.ros.org/kinetic/Installation/Ubuntu).  
 Or install directly gazebo8 from http://gazebosim.org/tutorials?tut=install_ubuntu  
 libgazebo7-dev or libgazebo8-dev must be installed.
+
+For Gazebo 7
 ````
 sudo apt-get install libgazebo7-dev
 ````
 OR  
+For Gazeo 8
 ````
 sudo apt-get install libgazebo8-dev
 ````
@@ -37,24 +41,48 @@ Now launch a world file with a copter/rover/plane and ardupilot plugin, and it s
 
 ## HELP 
 
-launch cmd :  
+How to Launch :  
+Launch Ardupilot Software In the Loop Simulation for each vehicle.
+On new terminal, Launch Gazebo with basic demo world.
+
 ROVER
+
 ````
+On 1st Terminal(Launch Ardupilot SITL)
 sim_vehicle.py -v APMrover2 -f gazebo-rover  -m --mav10 --map --console -I0
+
+On 2nd Termianal(Launch Gazebo with demo Rover model)
+gazebo --verbose worlds/ (Please Add if there is one.)
+
 ````
 COPTER
 ````
+On 1st Terminal(Launch Ardupilot SITL)
 sim_vehicle.py -v ArduCopter -f gazebo-iris  -m --mav10 --map --console -I0
+
+On 2nd Terminal(Launch Gazebo with demo 3DR Iris model)
+gazebo --verbose worlds/iris_irlock_demo.world
 ````
 PLANE
 ````
+On 1st Terminal(Launch Ardupilot SITL)
 sim_vehicle.py -v ArduPlane -f gazebo-zephyr  -m --mav10 --map --console -I0
+
+On 2nd Terminal(Launch Gazebo with demo Zephyr flying wing model)
+gazebo --verbose worlds/zephyr_ardupilot_demo.world
 ````
 
 ### Missing libArduPilotPlugin.so  
 In case you see this message, check you have no error after sudo make install.  
 If no error use "ls" on the install path given to see if the plugin is really here.  
-If this is correct, check with "cat /usr/share/gazebo/setup.sh" the variable GAZEBO_PLUGIN_PATH. It should be the same as the install path. If not use "cp" to copy the lib to right path. (example : cp /usr/lib/x86_64-linux-gnu/gazebo-7/plugins/libArduPilotPlugin.so /usr/lib/x86_64-linux-gnu/gazebo-7.0/plugins/ ).  
+If this is correct, check with "cat /usr/share/gazebo/setup.sh" the variable GAZEBO_PLUGIN_PATH. It should be the same as the install path. If not use "cp" to copy the lib to right path. 
+
+For Example
+
+````
+ cp /usr/lib/x86_64-linux-gnu/gazebo-7/plugins/libArduPilotPlugin.so /usr/lib/x86_64-linux-gnu/gazebo-7.0/plugins/ ).  
+````
+
 I don't know why it can have path mistmatch ... but it could append if you install gazebo from sasc-gazebo-sitl .
 
 
@@ -71,3 +99,4 @@ example : for SITL default location
       <heading_deg>87</heading_deg>
     </spherical_coordinates>
 ````
+

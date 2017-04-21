@@ -82,8 +82,8 @@ On 2nd Terminal(Launch Gazebo with demo Zephyr flying wing model)
 gazebo --verbose worlds/zephyr_ardupilot_demo.world
 ````
 
-In addition, you can use any GCS of Ardupilot locally or remotely(will require figure out connection setup).
-If MAVProxy Developer GCS is uncomportable. omit --map --console out of SITL launch.
+In addition, you can use any GCS of Ardupilot locally or remotely(will require connection setup).
+If MAVProxy Developer GCS is uncomportable. Omit --map --console arguments out of SITL launch. and Use APMPlanner 2 instead.
 Local connection with APMPlanner2 is automatic, and recommended.
 Download it here http://firmware.eu.ardupilot.org/Tools/APMPlanner/
 and launch it in terminal

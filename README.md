@@ -11,13 +11,17 @@ This assume that your are using Ubuntu 16.04
 
 ## Usage :
 I assume you already have Gazebo installed with ROS (or without).  
-If you don't have it yet, install ROS with sudo apt install ros-kinetic-desktop-full (follow instruction here http://wiki.ros.org/kinetic/Installation/Ubuntu).  
+If you don't have it yet, install ROS with sudo apt install ros-kinetic-desktop-full 
+(follow instruction here http://wiki.ros.org/kinetic/Installation/Ubuntu).  
 Or install directly gazebo8 from http://gazebosim.org/tutorials?tut=install_ubuntu  
 libgazebo7-dev or libgazebo8-dev must be installed.
+
+For Gazebo 7
 ````
 sudo apt-get install libgazebo7-dev
 ````
 OR  
+For Gazeo 8
 ````
 sudo apt-get install libgazebo8-dev
 ````
@@ -95,3 +99,4 @@ example : for SITL default location
       <heading_deg>87</heading_deg>
     </spherical_coordinates>
 ````
+

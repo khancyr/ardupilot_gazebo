@@ -1,6 +1,8 @@
 # Ardupilot Gazebo plugin 
 
 ## Requirements :
+Native Ubuntu able to run full 3D graphics.
+(Virtual Machine such as VMWare Player does not support full 3D graphics.)
 Gazebo version 7.x or 8.x  
 The dev branch will works on gazebo >= 9.x  
 

@@ -52,7 +52,7 @@ DONE !
 Now launch a world file with a copter/rover/plane and ardupilot plugin, and it should work! 
 (I will try to add some world file and model later)
 
-## HELP 
+## HELP
 
 How to Launch :  
 Launch Ardupilot Software In the Loop Simulation for each vehicle.
@@ -89,6 +89,7 @@ If MAVProxy Developer GCS is uncomportable. Omit --map --console arguments out o
 Local connection with APMPlanner2/QGroundControl is automatic, and recommended.
 
 For APMPlanner2
+
 Download it here http://firmware.eu.ardupilot.org/Tools/APMPlanner/
 and launch it in terminal
 
@@ -97,11 +98,16 @@ apmplanner2
 ````
 
 For QGroundControl
-Download it here and follow the installation guide below.
+
+Download it here and follow the installation guide.
+
 http://qgroundcontrol.com/downloads/
 
 
+## Troubleshooting
+
 ### Missing libArduPilotPlugin.so... etc 
+
 In case you see this message when you launch gazebo with demo worlds, check you have no error after sudo make install.  
 If no error use "ls" on the install path given to see if the plugin is really here.  
 If this is correct, check with "cat /usr/share/gazebo/setup.sh" the variable GAZEBO_PLUGIN_PATH. It should be the same as the install path. If not use "cp" to copy the lib to right path. 

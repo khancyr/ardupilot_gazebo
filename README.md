@@ -85,8 +85,10 @@ gazebo --verbose worlds/zephyr_ardupilot_demo.world
 ````
 
 In addition, you can use any GCS of Ardupilot locally or remotely(will require connection setup).
-If MAVProxy Developer GCS is uncomportable. Omit --map --console arguments out of SITL launch. and Use APMPlanner 2 instead.
-Local connection with APMPlanner2 is automatic, and recommended.
+If MAVProxy Developer GCS is uncomportable. Omit --map --console arguments out of SITL launch. and Use APMPlanner 2 or QGroundControl instead.
+Local connection with APMPlanner2/QGroundControl is automatic, and recommended.
+
+For APMPlanner2
 Download it here http://firmware.eu.ardupilot.org/Tools/APMPlanner/
 and launch it in terminal
 
@@ -94,18 +96,23 @@ and launch it in terminal
 apmplanner2
 ````
 
-### Missing libArduPilotPlugin.so  
-In case you see this message, check you have no error after sudo make install.  
+For QGroundControl
+Download it here and follow the installation guide below.
+http://qgroundcontrol.com/downloads/
+
+
+### Missing libArduPilotPlugin.so... etc 
+In case you see this message when you launch gazebo with demo worlds, check you have no error after sudo make install.  
 If no error use "ls" on the install path given to see if the plugin is really here.  
 If this is correct, check with "cat /usr/share/gazebo/setup.sh" the variable GAZEBO_PLUGIN_PATH. It should be the same as the install path. If not use "cp" to copy the lib to right path. 
 
 For Example
 
 ````
- cp /usr/lib/x86_64-linux-gnu/gazebo-7/plugins/libArduPilotPlugin.so /usr/lib/x86_64-linux-gnu/gazebo-7.0/plugins/ ).  
+sudo cp -a /usr/lib/x86_64-linux-gnu/gazebo-7.0/plugins/ /usr/lib/x86_64-linux-gnu/gazebo-7/plugins/).  
 ````
 
-I don't know why it can have path mistmatch ... but it could append if you install gazebo 7
+path mismatch is confirmed as ROS's glitch. It'll be fixed.
 
 ### Future(not activated yet)
 To use Gazebo gps, you must offset the heading of +90° as gazebo gps is NWU and ardupilot is NED 

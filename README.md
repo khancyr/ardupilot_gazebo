@@ -101,7 +101,7 @@ For QGroundControl
 
 Download it here and follow the installation guide.
 
-http://qgroundcontrol.com/downloads/
+https://donlakeflyer.gitbooks.io/qgroundcontrol-user-guide/en/download_and_install.html
 
 
 ## Troubleshooting
@@ -115,7 +115,7 @@ If this is correct, check with "cat /usr/share/gazebo/setup.sh" the variable GAZ
 For Example
 
 ````
-sudo cp -a /usr/lib/x86_64-linux-gnu/gazebo-7.0/plugins/ /usr/lib/x86_64-linux-gnu/gazebo-7/plugins/).  
+sudo cp -a /usr/lib/x86_64-linux-gnu/gazebo-7.0/plugins/ /usr/lib/x86_64-linux-gnu/gazebo-7/
 ````
 
 path mismatch is confirmed as ROS's glitch. It'll be fixed.

@@ -12,7 +12,21 @@
       -->
       <pose>0 0 0.2 0 0 0</pose>
     </include>
-
+    <include>
+      <uri>model://ZED_stereocamera</uri>
+      <pose>0 -0.25 0.18 0 0 1.5707</pose>
+    </include>
+    <joint name="camera_mount" type="fixed">
+      <child>ZED_stereocamera::link</child>
+      <parent>skid_pad</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
     <link name="skid_pad">
       <inertial>
         <mass>0.1</mass>
@@ -63,23 +77,6 @@
           </friction>
         </surface>
       </collision>
-      <sensor name="chase_cam" type="camera">
-        <pose>0 5 0.0 0 0.0 -1.5707</pose>
-        <camera>
-          <horizontal_fov>0.5</horizontal_fov>
-          <image>
-            <width>1280</width>
-            <height>960</height>
-          </image>
-          <clip>
-            <near>0.1</near>
-            <far>1000</far>
-          </clip>
-        </camera>
-        <always_on>0</always_on>
-        <update_rate>15</update_rate>
-        <visualize>false</visualize>
-      </sensor>
       <sensor name="chase_cam_wide" type="camera">
         <pose>0 2 1 0 0.2 -1.5707</pose>
         <camera>

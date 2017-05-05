@@ -2,8 +2,16 @@
 
 ## Requirements :
 Native Ubuntu able to run full 3D graphics.
-(Virtual Machine such as VMWare Player does not support full 3D graphics.)
-Gazebo version 7.x or 8.x  
+(Virtual Machine such as VMWare Player does not support full 3D graphics.
+
+but, possible solution is here
+````
+$ echo "export SVGA_VGPU10=0" >> ~/.bashrc
+source ~/.bashrc
+````
+from here http://answers.gazebosim.org/question/13214/virtual-machine-not-launching-gazebo/)
+
+Gazebo version 7.x or 8.x  
 The dev branch will works on gazebo >= 9.x  
 
 ## Disclamer : 

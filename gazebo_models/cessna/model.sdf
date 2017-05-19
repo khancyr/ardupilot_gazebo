@@ -34,7 +34,7 @@
       </visual>
 
       <!-- Debug - Centers of pressure -->
-      <!--<visual name="cp_left_wing">
+      <visual name="cp_left_wing">
         <pose>-1 2.205 1.5 0 0 0</pose>
         <geometry>
           <sphere><radius>0.1</radius></sphere>
@@ -60,7 +60,7 @@
         <geometry>
           <sphere><radius>0.1</radius></sphere>
         </geometry>
-      </visual>-->
+      </visual>-
 
     </link>
 
@@ -279,6 +279,14 @@
           <mesh>
             <uri>model://cessna/meshes/cessna_prop.dae</uri>
           </mesh>
+        </geometry>
+      </visual>
+      <visual name="prop_cp">
+        <pose>-0.37 0 0.77 0 0 0</pose>
+        <geometry>
+          <sphere>
+            <radius>0.2</radius>
+          </sphere>
         </geometry>
       </visual>
     </link>

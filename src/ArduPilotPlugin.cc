@@ -137,22 +137,22 @@ struct fdmPacket
 /*  NOT MERGED IN MASTER YET
   /// \brief Model latitude in WGS84 system
   double latitude = 0.0;
-  
+
   /// \brief Model longitude in WGS84 system
   double longitude = 0.0;
-  
+
   /// \brief Model altitude from GPS
   double altitude = 0.0;
-  
+
   /// \brief Model estimated from airspeed sensor (e.g. Pitot) in m/s
-  double airspeed = 0.0; 
-  
+  double airspeed = 0.0;
+
   /// \brief Battery voltage. Default to -1 to use sitl estimator.
   double battery_voltage = -1.0;
-  
+
   /// \brief Battery Current.
   double battery_current = 0.0;
-  
+
   /// \brief Model rangefinder value. Default to -1 to use sitl rangefinder.
   double rangefinder = -1.0;
 */
@@ -186,7 +186,7 @@ class Control
   /// POSITION control position of joint
   /// EFFORT control effort of joint
   public: std::string type;
-  
+
   /// \brief use force controler
   public: bool useForce = true;
 
@@ -371,7 +371,7 @@ class gazebo::ArduPilotPluginPrivate
 
   /// \brief Pointer to the model;
   public: physics::ModelPtr model;
-  
+
   /// \brief String of the model name;
   public: std::string modelName;
 
@@ -404,10 +404,10 @@ class gazebo::ArduPilotPluginPrivate
 
   /// \brief Pointer to an IMU sensor
   public: sensors::ImuSensorPtr imuSensor;
-  
+
   /// \brief Pointer to an GPS sensor
   public: sensors::GpsSensorPtr gpsSensor;
-  
+
   /// \brief Pointer to an Rangefinder sensor
   public: sensors::RaySensorPtr rangefinderSensor;
 
@@ -421,6 +421,8 @@ class gazebo::ArduPilotPluginPrivate
   /// \brief number of times ArduCotper skips update
   /// before marking ArduPilot offline
   public: int connectionTimeoutMaxCount;
+
+  public: double last_cmd = 150;
 };
 
 /////////////////////////////////////////////////
@@ -446,8 +448,8 @@ void ArduPilotPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   this->dataPtr->modelName = this->dataPtr->model->GetName();
 
   // modelXYZToAirplaneXForwardZDown brings us from gazebo model frame:
-  // x-forward, y-right, z-down
-  // to the aerospace convention: x-forward, y-left, z-up
+  // x-forward, y-left, z-up
+  // to the aerospace convention: x-forward, y-right, z-down
   this->modelXYZToAirplaneXForwardZDown =
     ignition::math::Pose3d(0, 0, 0, 0, 0, 0);
   if (_sdf->HasElement("modelXYZToAirplaneXForwardZDown"))
@@ -456,8 +458,8 @@ void ArduPilotPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
         _sdf->Get<ignition::math::Pose3d>("modelXYZToAirplaneXForwardZDown");
   }
 
-  // gazeboXYZToNED: from gazebo model frame: x-forward, y-right, z-down
-  // to the aerospace convention: x-forward, y-left, z-up
+  // gazeboXYZToNED: from gazebo model frame: x-forward, y-left, z-up
+  // to the aerospace convention: x-forward, y-right, z-down
   this->gazeboXYZToNED = ignition::math::Pose3d(0, 0, 0, IGN_PI, 0, 0);
   if (_sdf->HasElement("gazeboXYZToNED"))
   {
@@ -523,7 +525,7 @@ void ArduPilotPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
              << " default to VELOCITY.\n";
       control.type = "VELOCITY";
     }
-    
+
     if (controlSDF->HasElement("useForce"))
     {
       control.useForce = controlSDF->Get<bool>("useForce");
@@ -802,7 +804,7 @@ void ArduPilotPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
       this->dataPtr->gpsSensor = std::dynamic_pointer_cast<sensors::GpsSensor>
         (sensors::SensorManager::Instance()->GetSensor(gpsName));
     }
-    
+
     if (!this->dataPtr->gpsSensor)
     {
       gzwarn << "[" << this->dataPtr->modelName << "] "
@@ -815,7 +817,7 @@ void ArduPilotPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
              << "  found "  << " [" << gpsName << "].\n";
     }
   }
-  
+
   // Get Rangefinder
   // TODO add sonar
     std::string rangefinderName;
@@ -989,6 +991,10 @@ void ArduPilotPlugin::ApplyMotorForces(const double _dt)
       }
       else if (this->dataPtr->controls[i].type == "POSITION")
       {
+        /*const double upper_Lim = this->dataPtr->controls[i].joint->GetUpperLimit(0).Radian();
+        const double lower_Lim = this->dataPtr->controls[i].joint->GetLowerLimit(0).Radian();
+        const double scaler = 5*(upper_Lim - lower_Lim);
+        */
         const double posTarget = this->dataPtr->controls[i].cmd;
         const double pos = this->dataPtr->controls[i].joint->GetAngle(0).Radian();
         const double error = pos - posTarget;
@@ -1005,7 +1011,7 @@ void ArduPilotPlugin::ApplyMotorForces(const double _dt)
         // do nothing
       }
     }
-    else 
+    else
     {
       if (this->dataPtr->controls[i].type == "VELOCITY")
       {
@@ -1133,21 +1139,29 @@ void ArduPilotPlugin::ReceiveMotorCommand()
       {
         if (this->dataPtr->controls[i].channel < recvChannels)
         {
-          // bound incoming cmd between 0 and 1
+          // bound incoming cmd between -1 and 1
           const double cmd = ignition::math::clamp(
             pkt.motorSpeed[this->dataPtr->controls[i].channel],
             -1.0f, 1.0f);
           this->dataPtr->controls[i].cmd =
-            this->dataPtr->controls[i].multiplier *
-            (this->dataPtr->controls[i].offset + cmd);
-          // gzdbg << "apply input chan[" << this->dataPtr->controls[i].channel
-          //       << "] to control chan[" << i
-          //       << "] with joint name ["
-          //       << this->dataPtr->controls[i].jointName
-          //       << "] raw cmd ["
-          //       << pkt.motorSpeed[this->dataPtr->controls[i].channel]
-          //       << "] adjusted cmd [" << this->dataPtr->controls[i].cmd
-          //       << "].\n";
+            this->dataPtr->controls[i].multiplier * (cmd + this->dataPtr->controls[i].offset);
+
+            /*
+            const double cmd_in = this->dataPtr->controls[i].cmd;
+            if (cmd_in != last_cmd)
+              {
+                gzdbg << "apply input chan[" << this->dataPtr->controls[i].channel
+                    << "] to control chan[" << i
+                    << "] with joint name ["
+                    << this->dataPtr->controls[i].jointName
+                    << "] raw cmd ["
+                    << pkt.motorSpeed[this->dataPtr->controls[i].channel]
+                    << "] adjusted cmd [" << this->dataPtr->controls[i].cmd
+                     << "].\n";
+
+              last_cmd = cmd_in;
+              }
+              */
         }
         else
         {
@@ -1165,6 +1179,9 @@ void ArduPilotPlugin::ReceiveMotorCommand()
               << "too many motors, skipping [" << i
               << " > " << MAX_MOTORS << "].\n";
       }
+
+
+
     }
   }
 }
@@ -1274,7 +1291,7 @@ void ArduPilotPlugin::SendState() const
         pkt.latitude = this->dataPtr->gpsSensor->Latitude().Degree();
         pkt.altitude = this->dataPtr->gpsSensor->Altitude();
     }
-    
+
     // TODO : make generic enough to accept sonar/gpuray etc. too
     if (!this->dataPtr->rangefinderSensor)
     {
@@ -1284,7 +1301,7 @@ void ArduPilotPlugin::SendState() const
         const double range = this->dataPtr->rangefinderSensor->Range(0);
         pkt.rangefinder = std::isinf(range) ? 0.0 : range;
     }
-    
+
   // airspeed :     wind = Vector3(environment.wind.x, environment.wind.y, environment.wind.z)
    // pkt.airspeed = (pkt.velocity - wind).length()
 */

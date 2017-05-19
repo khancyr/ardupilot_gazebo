@@ -127,7 +127,7 @@
         <multiplier>838</multiplier>
         <offset>0</offset>
         <type>VELOCITY</type>
-        <p_gain>0.01</p_gain>
+        <p_gain>10</p_gain>
         <i_gain>0</i_gain>
         <d_gain>0</d_gain>
         <i_max>0</i_max>

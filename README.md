@@ -1,13 +1,15 @@
-# Ardupilot Gazebo plugin 
+# Ardupilot Gazebo Plugin & Models
 
 ## Requirements :
-Native Ubuntu able to run full 3D graphics.
+Native Ubuntu Xenial(16.04 LTS) able to run full 3D graphics.
 
 (Virtual Machine such as VMWare Player does not support full 3D graphics.
 
 but, possible solution is here
+
+Type follow in the terminal,
 ````
-$ echo "export SVGA_VGPU10=0" >> ~/.bashrc
+echo "export SVGA_VGPU10=0" >> ~/.bashrc
 source ~/.bashrc
 ````
 from here http://answers.gazebosim.org/question/13214/virtual-machine-not-launching-gazebo/)
@@ -94,8 +96,11 @@ gazebo --verbose worlds/zephyr_ardupilot_demo.world
 ````
 
 In addition, you can use any GCS of Ardupilot locally or remotely(will require connection setup).
-If MAVProxy Developer GCS is uncomportable. Omit --map --console arguments out of SITL launch. and Use APMPlanner 2 or QGroundControl instead.
-Local connection with APMPlanner2/QGroundControl is automatic, and recommended.
+If MAVProxy Developer GCS is uncomfortable. Omit --map --console arguments out of SITL launch. 
+
+And use APMPlanner 2 or QGroundControl instead.
+
+Local connection with APMPlanner2/QGroundControl is automatic, and easier to use.
 
 For APMPlanner2
 

@@ -193,8 +193,14 @@ class Control
   /// \brief Control propeller joint.
   public: std::string jointName;
 
+  /// \brief Control propeller link.
+  public: std::string linkName;
+
   /// \brief Control propeller joint.
   public: physics::JointPtr joint;
+
+  /// \brief Control propeller link.
+  public: physics::LinkPtr link;
 
   /// \brief direction multiplier for this control
   public: double multiplier = 1;
@@ -529,25 +535,50 @@ void ArduPilotPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
       control.useForce = controlSDF->Get<bool>("useForce");
     }
 
-    if (controlSDF->HasElement("jointName"))
+    if (!controlSDF->HasElement("linkName") && !controlSDF->HasElement("jointName")) {
+      gzerr << "[" << this->dataPtr->modelName << "] "
+            << "Please specify a jointName or linkName,"
+            << "where the control channel is attached.\n";
+      return ;
+    }
+    if (controlSDF->HasElement("linkName"))
     {
-      control.jointName = controlSDF->Get<std::string>("jointName");
+      control.linkName = controlSDF->Get<std::string>("linkName");
+      // Get the pointer to the link.
+      control.link = _model->GetLink(control.linkName);
+      if (control.link == nullptr)
+      {
+        gzdbg << "[" << this->dataPtr->modelName << "] "
+              << "Couldn't find specified link ["
+              << control.linkName << "]. This plugin will not run.\n";
+              return;
+      }
     }
     else
     {
-      gzerr << "[" << this->dataPtr->modelName << "] "
-            << "Please specify a jointName,"
+      gzdbg << "[" << this->dataPtr->modelName << "] "
+            << "Please specify a linkName,"
             << " where the control channel is attached.\n";
     }
 
-    // Get the pointer to the joint.
-    control.joint = _model->GetJoint(control.jointName);
-    if (control.joint == nullptr)
+    if (controlSDF->HasElement("jointName"))
     {
-      gzerr << "[" << this->dataPtr->modelName << "] "
-            << "Couldn't find specified joint ["
-            << control.jointName << "]. This plugin will not run.\n";
-      return;
+      control.jointName = controlSDF->Get<std::string>("jointName");
+      // Get the pointer to the joint.
+      control.joint = _model->GetJoint(control.jointName);
+      if (control.joint == nullptr)
+      {
+        gzerr << "[" << this->dataPtr->modelName << "] "
+              << "Couldn't find specified joint ["
+              << control.jointName << "]. This plugin will not run.\n";
+              return;
+      }
+    }
+    else
+    {
+      gzdbg << "[" << this->dataPtr->modelName << "] "
+            << "Please specify a jointName,"
+            << " where the control channel is attached.\n";
     }
 
     if (controlSDF->HasElement("multiplier"))
@@ -980,8 +1011,14 @@ void ArduPilotPlugin::ApplyMotorForces(const double _dt)
     {
       if (this->dataPtr->controls[i].type == "VELOCITY")
       {
+        if(!this->dataPtr->controls[i].joint) {
+          gzerr << "[" << this->dataPtr->modelName << "] "
+              << "Couldn't find specified joint."
+              << " This plugin will not run.\n";
+          return;
+        }
         const double velTarget = this->dataPtr->controls[i].cmd /
-          this->dataPtr->controls[i].rotorVelocitySlowdownSim;
+        this->dataPtr->controls[i].rotorVelocitySlowdownSim;
         const double vel = this->dataPtr->controls[i].joint->GetVelocity(0);
         const double error = vel - velTarget;
         const double force = this->dataPtr->controls[i].pid.Update(error, _dt);
@@ -989,6 +1026,12 @@ void ArduPilotPlugin::ApplyMotorForces(const double _dt)
       }
       else if (this->dataPtr->controls[i].type == "POSITION")
       {
+        if(!this->dataPtr->controls[i].joint) {
+          gzerr << "[" << this->dataPtr->modelName << "] "
+              << "Couldn't find specified joint."
+              << " This plugin will not run.\n";
+          return;
+        }
         const double posTarget = this->dataPtr->controls[i].cmd;
         const double pos = this->dataPtr->controls[i].joint->GetAngle(0).Radian();
         const double error = pos - posTarget;
@@ -998,7 +1041,12 @@ void ArduPilotPlugin::ApplyMotorForces(const double _dt)
       else if (this->dataPtr->controls[i].type == "EFFORT")
       {
         const double force = this->dataPtr->controls[i].cmd;
-        this->dataPtr->controls[i].joint->SetForce(0, force);
+        if(this->dataPtr->controls[i].link) {
+          const math::Vector3 linearVelocity = {0, 0, force};
+          this->dataPtr->controls[i].link->AddRelativeForce(linearVelocity);
+        } else {
+          this->dataPtr->controls[i].joint->SetForce(0, force);
+        }
       }
       else
       {

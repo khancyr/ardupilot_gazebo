@@ -1292,10 +1292,11 @@ void ArduPilotPlugin::SendState() const
 
   // imuOrientationQuat is the rotation from world NED frame
   // to the uav frame.
+  // Change from right to left hand
   pkt.imuOrientationQuat[0] = NEDToModelXForwardZUp.Rot().W();
-  pkt.imuOrientationQuat[1] = NEDToModelXForwardZUp.Rot().X();
+  pkt.imuOrientationQuat[1] = -NEDToModelXForwardZUp.Rot().X();
   pkt.imuOrientationQuat[2] = NEDToModelXForwardZUp.Rot().Y();
-  pkt.imuOrientationQuat[3] = NEDToModelXForwardZUp.Rot().Z();
+  pkt.imuOrientationQuat[3] = -NEDToModelXForwardZUp.Rot().Z();
 
   // gzdbg << "imu [" << gazeboXYZToModelXForwardZDown.rot.GetAsEuler()
   //       << "]\n";

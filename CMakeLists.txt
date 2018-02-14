@@ -41,6 +41,7 @@ set (plugins_single_header
         ArduCopterIRLockPlugin
 	ArduCopterPlugin
         GimbalSmall2dPlugin
+	WindPlugin
         )
 
 add_library(ArduCopterIRLockPlugin SHARED src/ArduCopterIRLockPlugin.cc)

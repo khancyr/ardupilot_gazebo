@@ -16,7 +16,7 @@
 */
 #include "gazebo/common/Assert.hh"
 #include "gazebo/common/Events.hh"
-#include "plugins/WindPlugin.hh"
+#include "../include/WindPlugin.hh"
 
 using namespace gazebo;
 

@@ -1,10 +1,10 @@
 <?xml version='1.0'?>
 <sdf version='1.6'>
   <model name="Sikorsky-X2_ArduPilot">
-    <pose>0 0 0 0 0 0</pose>
+    <pose>0 0 0.5 0 0 0</pose>
     <include>
       <uri>model://sikorsky-X2</uri>
-      <pose>0 0 0.2 0 0 0</pose>
+      <pose>0 0 0 0 0 0</pose>
     </include>
     <link name="cam_link">
       <pose>0 0 0 0 0 0 </pose>
@@ -30,7 +30,7 @@
         </clip>
       </camera>
       <always_on>0</always_on>
-      <update_rate>60</update_rate>
+      <update_rate>120</update_rate>
       <visualize>false</visualize>
     </sensor>
   </link>
@@ -63,35 +63,36 @@
         -->
 
         <control channel="0">
-          <multiplier>1</multiplier>
+          <multiplier>0.4</multiplier>
           <offset>-0.5</offset>
           <type>POSITION</type>
-          <p_gain>10</p_gain>
+          <p_gain>20</p_gain>
           <i_gain>0</i_gain>
           <d_gain>0</d_gain>
           <i_max>0</i_max>
           <i_min>0</i_min>
-          <cmd_max>10</cmd_max>
-          <cmd_min>-10</cmd_min>
+          <cmd_max>1</cmd_max>
+          <cmd_min>-1</cmd_min>
           <jointName>sikorsky-X2::swashplate_joint</jointName>
         </control>
 
         <control channel="1">
-          <multiplier>1</multiplier>
+          <multiplier>0.4</multiplier>
           <offset>-0.5</offset>
           <type>POSITION</type>
-          <p_gain>10</p_gain>
+          <p_gain>20</p_gain>
           <i_gain>0</i_gain>
           <d_gain>0</d_gain>
           <i_max>0</i_max>
           <i_min>0</i_min>
-          <cmd_max>10</cmd_max>
-          <cmd_min>-10</cmd_min>
+          <cmd_max>1</cmd_max>
+          <cmd_min>-1</cmd_min>
           <jointName>sikorsky-X2::swashplate2_joint</jointName>
         </control>
 
+        <!-- CCW Channel Positive Sign-->
         <control channel="4">
-        <multiplier>838</multiplier>
+        <multiplier>500</multiplier>
         <offset>0</offset>
         <type>VELOCITY</type>
         <p_gain>1</p_gain>
@@ -99,26 +100,43 @@
         <d_gain>0</d_gain>
         <i_max>0</i_max>
         <i_min>0</i_min>
-        <cmd_max>10</cmd_max>
+        <cmd_max>6</cmd_max>
         <cmd_min>0</cmd_min>
         <jointName>sikorsky-X2::blade_up_joint</jointName>
-        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+        <controlVelocitySlowdownSim>0</controlVelocitySlowdownSim>
       </control>
+
+        <!-- CW Channel Negative Sign-->
         <control channel="5">
-        <multiplier>-838</multiplier>
-        <offset>0</offset>
+        <multiplier>-500</multiplier>
         <type>VELOCITY</type>
+        <offset>0</offset>
         <p_gain>1</p_gain>
         <i_gain>0</i_gain>
         <d_gain>0</d_gain>
         <i_max>0</i_max>
         <i_min>0</i_min>
         <cmd_max>0</cmd_max>
-        <cmd_min>-10</cmd_min>
+        <cmd_min>-6</cmd_min>
         <jointName>sikorsky-X2::blade_down_joint</jointName>
+        <controlVelocitySlowdownSim>0</controlVelocitySlowdownSim>
       </control>
-    -->
-    </plugin>
 
+      <!-- Compound Thruster Channel -->
+      <control channel="6">
+        <multiplier>2000</multiplier>
+        <offset>-0.1</offset>
+        <type>VELOCITY</type>
+        <p_gain>10</p_gain>
+        <i_gain>0.0</i_gain>
+        <d_gain>0</d_gain>
+        <i_max>0</i_max>
+        <i_min>0</i_min>
+        <cmd_max>5</cmd_max>
+        <cmd_min>0</cmd_min>
+        <jointName>sikorsky-X2::blade_rear_joint</jointName>
+        <controlVelocitySlowdownSim>0</controlVelocitySlowdownSim>
+    </control>
+    </plugin>
   </model>
 </sdf>

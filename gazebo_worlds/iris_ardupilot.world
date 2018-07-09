@@ -124,7 +124,7 @@ LOITER> mode LAND
     <model name="iris">
       <pose> 0 0 0 0 0 0 </pose>
       <include>
-        <uri>model://iris_with_standoffs3</uri>
+        <uri>model://iris_with_lidar</uri>
          <pose> 0 0 0 0 0 0 </pose>
       </include>
     </model>

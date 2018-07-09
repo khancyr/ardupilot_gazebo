@@ -11,9 +11,9 @@
       <inertial>
         <mass>0.01</mass>
         <inertia>
-          <ixx>0.001</ixx>
-          <iyy>0.001</iyy>
-          <izz>0.001</izz>
+          <ixx>0.0001</ixx>
+          <iyy>0.0001</iyy>
+          <izz>0.0001</izz>
         </inertia>
       </inertial>
     <sensor name="chase_cam" type="camera">
@@ -30,7 +30,7 @@
         </clip>
       </camera>
       <always_on>0</always_on>
-      <update_rate>120</update_rate>
+      <update_rate>60</update_rate>
       <visualize>false</visualize>
     </sensor>
   </link>
@@ -63,10 +63,10 @@
         -->
 
         <control channel="0">
-          <multiplier>0.4</multiplier>
+          <multiplier>1</multiplier>
           <offset>-0.5</offset>
           <type>POSITION</type>
-          <p_gain>20</p_gain>
+          <p_gain>1</p_gain>
           <i_gain>0</i_gain>
           <d_gain>0</d_gain>
           <i_max>0</i_max>
@@ -77,10 +77,10 @@
         </control>
 
         <control channel="1">
-          <multiplier>0.4</multiplier>
+          <multiplier>1</multiplier>
           <offset>-0.5</offset>
           <type>POSITION</type>
-          <p_gain>20</p_gain>
+          <p_gain>1</p_gain>
           <i_gain>0</i_gain>
           <d_gain>0</d_gain>
           <i_max>0</i_max>
@@ -103,9 +103,9 @@
         <cmd_max>6</cmd_max>
         <cmd_min>0</cmd_min>
         <jointName>sikorsky-X2::blade_up_joint</jointName>
-        <controlVelocitySlowdownSim>0</controlVelocitySlowdownSim>
       </control>
 
+      <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
         <!-- CW Channel Negative Sign-->
         <control channel="5">
         <multiplier>-500</multiplier>
@@ -119,7 +119,7 @@
         <cmd_max>0</cmd_max>
         <cmd_min>-6</cmd_min>
         <jointName>sikorsky-X2::blade_down_joint</jointName>
-        <controlVelocitySlowdownSim>0</controlVelocitySlowdownSim>
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
       </control>
 
       <!-- Compound Thruster Channel -->
@@ -135,8 +135,9 @@
         <cmd_max>5</cmd_max>
         <cmd_min>0</cmd_min>
         <jointName>sikorsky-X2::blade_rear_joint</jointName>
-        <controlVelocitySlowdownSim>0</controlVelocitySlowdownSim>
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
     </control>
+
     </plugin>
   </model>
 </sdf>

@@ -5,6 +5,11 @@
     <link name="link">
       <inertial>
         <mass>0.1</mass>
+          <inertia>
+          <ixx>0.0001</ixx>
+          <iyy>0.0001</iyy>
+          <izz>0.0001</izz>
+        </inertia>
       </inertial>
       <visual name="visual">
         <geometry>

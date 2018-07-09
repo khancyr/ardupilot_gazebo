@@ -24,6 +24,12 @@
             <uri> model://ZED_stereocamera/meshes/ZED.stl</uri>
             </mesh>
           </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Grey</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
       </visual>
       <visual name="visual_lens_left">
         <pose>0 -0.06 0 0 1.57 0</pose>

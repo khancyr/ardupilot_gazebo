@@ -14,7 +14,7 @@
     </include>
     <include>
       <uri>model://ZED_stereocamera</uri>
-      <pose>0 -0.25 0.18 0 0 1.5707</pose>
+      <pose>0 -0.34 0.28 0 0 4.7123889803</pose>
     </include>
     <joint name="camera_mount" type="fixed">
       <child>ZED_stereocamera::link</child>
@@ -39,15 +39,15 @@
           <izz>0.00809845106</izz>
         </inertia>
       </inertial>
-      
-      <visual name="skid_pad">
+
+      <!-- <visual name="skid_pad">
         <pose>0 -0.05 0.025 0 0 0</pose>
         <geometry>
           <box>
             <size>.5 1.0 .05</size>
           </box>
         </geometry>
-      </visual>
+      </visual> -->
 
       <collision name="skid_pad">
         <pose>0 -0.07 0.025 0 0 0</pose>

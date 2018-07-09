@@ -25,13 +25,10 @@
       <collision name='base_link_collision'>
         <pose>0 0 0 0 0 0</pose>
         <geometry>
-          <!-- <box>
-            <size>0.75 0.2 .18</size>
-          </box> -->
-	         <mesh>
-            <scale>10 10 10</scale>
-            <uri>model://sikorsky-X2/meshes/Sikorsky-X2_Fuselage2.dae</uri>
-          </mesh>
+          <box>
+            <size>0.75 0.2 .2</size>
+          </box>
+	         <!-- <mesh> -->
         </geometry>
       </collision>
       <visual name='base_link_visual'>
@@ -51,7 +48,7 @@
       </visual>
     </link>
     <link name="virtual_landing">
-      <pose>0.08 0 -0.09 0 0 0</pose>
+      <pose>0.08 0 -0.14 0 0 0</pose>
       <inertial>
         <mass>0.05</mass>
         <inertia>
@@ -67,16 +64,16 @@
         <pose>0 0 0 0 0 0</pose>
         <geometry>
           <box>
-            <size>0.4 0.2 .025</size>
+            <size>0.6 0.2 .03</size>
           </box>
         </geometry>
         <surface>
           <contact>
             <ode>
-              <kp>100000000</kp>
-              <kd>1</kd>
+              <kp>10</kp>
+              <kd>5</kd>
               <min_depth>0.001</min_depth>
-              <max_vel>1.0</max_vel>
+              <max_vel>0.5</max_vel>
             </ode>
           </contact>
           <friction>
@@ -84,7 +81,6 @@
               <mu>0.5</mu>
               <mu2>0.5</mu2>
               <fdir1>1 0 0</fdir1>
-              <fdir2>0 1 0</fdir2>
             </ode>
           </friction>
         </surface>
@@ -207,7 +203,8 @@
         <pose>0 0 0 0 0 0</pose>
         <mass>0.04</mass>
         <inertia>
-          <ixx>9.75e-05</ixx>
+          <!-- <ixx>9.75e-05</ixx> -->
+          <ixx>0.00001</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
           <iyy>0.000166704</iyy>
@@ -270,7 +267,7 @@
               </script>
             </material>
           </visual> -->
-      <self_collide>0</self_collide>
+      <!-- <self_collide>0</self_collide> -->
     </link>
 
     <link name='blade_down'>
@@ -278,8 +275,8 @@
       <inertial>
         <mass>0.04</mass>
         <inertia>
-          <ixx>9.75e-05</ixx>
-          <!-- <ixx>0.00001</ixx> -->
+          <!-- <ixx>9.75e-05</ixx> -->
+          <ixx>0.00001</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
           <iyy>0.000166704</iyy>
@@ -330,7 +327,7 @@
               </script>
             </material>
           </visual> -->
-      <self_collide>0</self_collide>
+      <!-- <self_collide>0</self_collide> -->
     </link>
 
     <link name='blade_rear'>
@@ -339,7 +336,7 @@
         <mass>0.01</mass>
         <inertia>
           <!-- <ixx>0.00008</ixx> -->
-          <ixx>0.00001</ixx>
+          <ixx>0.00002</ixx>
           <ixy>0</ixy>
           <ixz>0</ixz>
           <iyy>0.000003187</iyy>
@@ -395,7 +392,7 @@
           </visual> -->
     </link>
 
-    <!- Control Surfaces Joints -->
+    <!-- Control Surfaces Joints -->
     <joint name='blade_up_joint' type='revolute'>
       <child>blade_up</child>
       <parent>swashplate2</parent>
@@ -404,8 +401,8 @@
         <limit>
           <lower>-1e+16</lower>
           <upper>1e+16</upper>
-          <effort>-1</effort>
-          <velocity>-1</velocity>
+          <!-- <effort>-1</effort>
+          <velocity>-1</velocity> -->
         </limit>
         <dynamics>
               <damping>0.002</damping>
@@ -427,8 +424,8 @@
         <limit>
           <lower>-1e+12</lower>
           <upper>1e+12</upper>
-          <effort>-1</effort>
-          <velocity>-1</velocity>
+          <!-- <effort>-1</effort>
+          <velocity>-1</velocity> -->
         </limit>
         <dynamics>
           <damping>0.002</damping>
@@ -451,8 +448,8 @@
         <limit>
           <lower>-1e+12</lower>
           <upper>1e+12</upper>
-          <effort>-1</effort>
-          <velocity>-1</velocity>
+          <!-- <effort>-1</effort>
+          <velocity>-1</velocity> -->
         </limit>
         <dynamics>
           <damping>0.002</damping>
@@ -477,9 +474,9 @@
           <upper>0.2</upper>
         </limit>
         <dynamics>
-            <damping>0.1</damping>
+            <damping>0.3</damping>
         </dynamics>
-        <!-- <use_parent_model_frame>true</use_parent_model_frame> -->
+        <use_parent_model_frame>true</use_parent_model_frame>
         </axis>
         <physics>
           <ode>
@@ -499,9 +496,9 @@
           <upper>0.2</upper>
         </limit>
         <dynamics>
-          <damping>0.1</damping>
+          <damping>0.3</damping>
         </dynamics>
-        <!-- <use_parent_model_frame>true</use_parent_model_frame> -->
+        <use_parent_model_frame>true</use_parent_model_frame>
       </axis>
       <physics>
         <ode>
@@ -512,9 +509,9 @@
 
     <!-- plugins -->
     <plugin name="Blade_Up_Plugin_01" filename="libLiftDragPlugin.so">
-      <a0>0.06</a0>
-      <alpha_stall>0.25</alpha_stall>
-      <cla>2.0</cla>
+      <a0>0.05</a0>
+      <alpha_stall>0.30</alpha_stall>
+      <cla>1.75</cla>
       <cda>0.10</cda>
       <cma>0.00</cma>
       <cla_stall>0.0</cla_stall>
@@ -530,9 +527,9 @@
     </plugin>
 
     <plugin name="Blade_Up_Plugin_02" filename="libLiftDragPlugin.so">
-      <a0>0.06</a0>
-      <alpha_stall>0.25</alpha_stall>
-      <cla>2.0</cla>
+      <a0>0.05</a0>
+      <alpha_stall>0.30</alpha_stall>
+      <cla>1.75</cla>
       <cda>0.10</cda>
       <cma>0.00</cma>
       <cla_stall>0.0</cla_stall>
@@ -549,9 +546,9 @@
 
 
     <plugin name="Blade_Down_Plugin_01" filename="libLiftDragPlugin.so">
-      <a0>0.06</a0>
-      <alpha_stall>0.25</alpha_stall>
-      <cla>2.0</cla>
+      <a0>0.05</a0>
+      <alpha_stall>0.30</alpha_stall>
+      <cla>1.75</cla>
       <cda>0.10</cda>
       <cma>0.00</cma>
       <cla_stall>0.0</cla_stall>
@@ -567,9 +564,9 @@
     </plugin>
 
     <plugin name="Blade_Down_Plugin_02" filename="libLiftDragPlugin.so">
-      <a0>0.06</a0>
-      <alpha_stall>0.25</alpha_stall>
-      <cla>2.0</cla>
+      <a0>0.05</a0>
+      <alpha_stall>0.3</alpha_stall>
+      <cla>1.75</cla>
       <cda>0.10</cda>
       <cma>0.00</cma>
       <cla_stall>0.0</cla_stall>
@@ -586,9 +583,9 @@
 
 
     <!-- Auxiliary Thruster -->
-    <!-- <plugin name="Blade_Rear_Plugin_01" filename="libLiftDragPlugin.so">
+    <plugin name="Blade_Rear_Plugin_01" filename="libLiftDragPlugin.so">
       <a0>0.25</a0>
-      <alpha_stall>1.4</alpha_stall>
+      <alpha_stall>0.25</alpha_stall>
       <cla>3.5</cla>
       <cda>0.10</cda>
       <cma>0.00</cma>
@@ -606,7 +603,7 @@
 
     <plugin name="Blade_Rear_Plugin_02" filename="libLiftDragPlugin.so">
       <a0>0.25</a0>
-      <alpha_stall>1.4</alpha_stall>
+      <alpha_stall>0.25</alpha_stall>
       <cla>3.5</cla>
       <cda>0.10</cda>
       <cma>0.00</cma>
@@ -620,7 +617,7 @@
       <upward>1 0 0</upward>
       <radial_symmetry>false</radial_symmetry>
       <link_name>blade_rear</link_name>
-    </plugin> -->
+    </plugin>
 
     <!-- <plugin name="Blade_Rear_Plugin_03" filename="libLiftDragPlugin.so">
       <a0>0.2</a0>
@@ -636,7 +633,7 @@
       <cp>0 0.04 0</cp>
       <forward>0 0 1</forward>
       <upward>1 0 0</upward>
-      <radial_symmetry>false</radial_symmetry>
+      <radial_symmetry>true</radial_symmetry>
       <link_name>blade_rear</link_name>
     </plugin>
 
@@ -654,7 +651,7 @@
       <cp>0 -0.04 0</cp>
       <forward>0 0 -1</forward>
       <upward>1 0 0</upward>
-      <radial_symmetry>false</radial_symmetry>
+      <radial_symmetry>true</radial_symmetry>
       <link_name>blade_rear</link_name>
     </plugin> -->
 

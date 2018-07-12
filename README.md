@@ -3,8 +3,8 @@
 ## Requirements :
 Native Ubuntu able to run full 3D graphics.
 (Virtual Machine such as VMWare Player does not support full 3D graphics.0)
-Gazebo version 7.x or 8.x  
-The dev branch will works on gazebo >= 9.x  
+Gazebo version 7.x or 8.x.
+Gazebo >= 9.x not supported.
 
 ## Disclamer : 
 This is a playground until I get some time to push the correct patch to gazebo master (I got hard time to work with mercurial..)!  
@@ -18,18 +18,24 @@ If you don't have it yet, install ROS with sudo apt install ros-kinetic-desktop-
 Due to a bug in current gazebo release from ROS, please update gazebo with OSRF version from http://gazebosim.org/tutorials?tut=install_ubuntu
 libgazebo7-dev or libgazebo8-dev must be installed.
 
+Dependencies: 
+```
+sudo apt install git cmake build-essential
+```
+
 For Gazebo 7
 ````
-sudo apt-get install libgazebo7-dev
+sudo apt install gazebo7 libgazebo7-dev
 ````
 OR  
 For Gazebo 8
 ````
-sudo apt-get install libgazebo8-dev
+sudo apt install gazebo8 libgazebo8-dev
 ````
 ````
-git clone https://github.com/khancyr/ardupilot_gazebo
+git clone https://github.com/patrickelectric/ardupilot_gazebo
 cd ardupilot_gazebo
+git checkout add_link
 mkdir build
 cd build
 cmake ..

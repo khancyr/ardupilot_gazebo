@@ -3,7 +3,7 @@
 ## Requirements :
 Native Ubuntu Xenial(16.04 LTS) able to run full 3D graphics.
 
-(Virtual Machine such as VMWare Player does not support full 3D graphics.
+Note : Virtual Machine such as VMWare Player does not support full 3D graphics.
 
 but, possible solution is here
 
@@ -12,7 +12,7 @@ Type follow in the terminal,
 echo "export SVGA_VGPU10=0" >> ~/.bashrc
 source ~/.bashrc
 ````
-from here http://answers.gazebosim.org/question/13214/virtual-machine-not-launching-gazebo/)
+solution retreived from here http://answers.gazebosim.org/question/13214/virtual-machine-not-launching-gazebo/
 
 Gazebo version 7.x or 8.x  
 The dev branch will works on gazebo >= 9.x  
@@ -26,7 +26,9 @@ This assume that your are using Ubuntu 16.04
 I assume you already have Gazebo installed with ROS (or without).  
 If you don't have it yet, install ROS with sudo apt install ros-kinetic-desktop-full 
 (follow instruction here http://wiki.ros.org/kinetic/Installation/Ubuntu).  
+
 Or install directly gazebo8 from http://gazebosim.org/tutorials?tut=install_ubuntu  
+
 libgazebo7-dev or libgazebo8-dev must be installed.
 
 For Gazebo 7
@@ -50,15 +52,15 @@ sudo make install
 Set Path of Gazebo Models
 ````
 echo 'export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/gazebo_models' >> ~/.bashrc
+````
+
+Set Path of Gazebo Worlds
+````
+export GAZEBO_RESOURCE_PATH=~/ardupilot_gazebo/gazebo_worlds:${GAZEBO_RESOURCE_PATH}
 source ~/.bashrc
 ````
 
-Copy Demo Worlds to Gazebo
-````
-sudo cp -a ~/ardupilot_gazebo/gazebo_worlds/. /usr/share/gazebo-7/worlds
-````
-
-DONE !
+Install is done !!
 
 Now launch a world file with a copter/rover/plane and ardupilot plugin, and it should work! 
 (I will try to add some world file and model later)
@@ -75,24 +77,25 @@ On 1st Terminal(Launch Ardupilot SITL)
 sim_vehicle.py -v APMrover2 -f gazebo-rover  -m --mav10 --map --console -I0
 
 On 2nd Termianal(Launch Gazebo with demo Rover model)
-gazebo --verbose worlds/ (Please Add if there is one.)
+gazebo --verbose (Please Add if there is one.)
 
 ````
-COPTER
+COPTER (3DR IRIS)
 ````
 On 1st Terminal(Launch Ardupilot SITL)
 sim_vehicle.py -v ArduCopter -f gazebo-iris  -m --mav10 --map --console -I0
 
 On 2nd Terminal(Launch Gazebo with demo 3DR Iris model)
-gazebo --verbose worlds/iris_irlock_demo.world
+gazebo --verbose iris_ardupilot.world
 ````
+
 PLANE
 ````
 On 1st Terminal(Launch Ardupilot SITL)
 sim_vehicle.py -v ArduPlane -f gazebo-zephyr  -m --mav10 --map --console -I0
 
 On 2nd Terminal(Launch Gazebo with demo Zephyr flying wing model)
-gazebo --verbose worlds/zephyr_ardupilot_demo.world
+gazebo --verbose zephyr_ardupilot_demo.world
 ````
 
 In addition, you can use any GCS of Ardupilot locally or remotely(will require connection setup).

@@ -132,9 +132,13 @@ This section explains how to connect any combination of multi-vehicles of ArduPi
 
 For the multi-vehicle connection, port number is increased by 10
 In SITL launch argument (sim_vehicle.py)
+
 -I 0 has FDM in/out ports of 9002/9003 / GCS connection UDP:14550
+
 -I 1 has FDM in/out ports of 9012/9013 / GCS connection UDP:14560
+
 -I 2 has FDM in/out ports of 9022/9023 / GCS connection UDP:14570
+
 and so on...
 
 You will need to edit your world for any combination of Rover, Plane, Copter, etc...

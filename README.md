@@ -58,12 +58,11 @@ sudo gedit ~/.bashrc
 Copy & Paste Followings at the end of .bashrc file
 ````
 source /usr/share/gazebo/setup.sh
+````
+````
 export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/models:${GAZEBO_MODEL_PATH}
 export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/models_gazebo:${GAZEBO_MODEL_PATH}
 export GAZEBO_RESOURCE_PATH=~/ardupilot_gazebo/worlds:${GAZEBO_RESOURCE_PATH}
-````
-
-
 ````
 
 Install is done !!

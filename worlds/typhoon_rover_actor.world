@@ -1,0 +1,239 @@
+<?xml version="1.0" ?>
+
+<sdf version="1.6">
+  <world name="default">
+    <physics type="ode">
+      <ode>
+        <solver>
+          <type>quick</type>
+          <iters>100</iters>
+          <sor>1.0</sor>
+        </solver>
+        <constraints>
+          <cfm>0.0</cfm>
+          <erp>0.9</erp>
+          <contact_max_correcting_vel>0.1</contact_max_correcting_vel>
+          <contact_surface_layer>0.0</contact_surface_layer>
+        </constraints>
+      </ode>
+      <real_time_update_rate>0</real_time_update_rate>
+      <max_step_size>0.0025</max_step_size>
+    </physics>
+
+      <include>
+      <uri>model://sun</uri>
+    </include>
+
+    <model name="ground_plane">
+      <static>true</static>
+      <link name="link">
+        <collision name="collision">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>5000 5000</size>
+            </plane>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+              </ode>
+            </friction>
+          </surface>
+        </collision>
+        <visual name="runway">
+          <pose>000 0 0.005 0 0 -1.5707</pose>
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>1829 45</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Runway</name>
+            </script>
+          </material>
+        </visual>
+
+        <visual name="grass">
+          <pose>0 0 -0.1 0 0 0</pose>
+          <cast_shadows>false</cast_shadows>
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>5000 5000</size>
+            </plane>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Grass</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <model name="rover_irlock">
+      <pose>1.5 0 0 0 0 0 </pose>
+      <include>
+        <uri>model://rover_irlock</uri>
+        <pose>0 0 0 0 0 0</pose>
+      </include>
+      <link name="irlock_beacon">
+        <pose>0 0 0.25 0 0 0</pose>
+         <inertial>
+          <mass>1.0</mass>
+          <inertia>
+            <ixx>0.019</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.01</iyy>
+            <iyz>0</iyz>
+            <izz>0.01</izz>
+          </inertia>
+        </inertial>
+        <collision name="collision">
+          <geometry>
+            <box>
+              <size>0.5 0.5 0.02</size>
+            </box>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1.0</mu>
+                <mu2>1.0</mu2>
+                <fdir1>1 0 0</fdir1>
+              </ode>
+            </friction>
+            <contact>
+              <ode>
+                <kp>1e+12</kp>
+                <kd>1</kd>
+                <max_vel>1</max_vel>
+                <min_depth>0.003</min_depth>
+              </ode>
+            </contact>
+          </surface>
+        </collision>
+        <visual name="visual2">
+          <geometry>
+            <box>
+              <size>1.0 1.0 0.018</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Green</name>
+            </script>
+          </material>
+        </visual>
+        <visual name="visual">
+          <geometry>
+            <box>
+              <size>0.1 0.1 0.02</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+      </link>
+      <joint name="irlock_mount" type="fixed">
+        <pose>0 0 0.0 0 0 0</pose>
+        <parent>rover_ardupilot::husky::base_link</parent>
+        <child>irlock_beacon</child>
+        <axis>
+          <use_parent_model_frame>true</use_parent_model_frame>
+          <limit>
+            <upper>0</upper>
+            <lower>0</lower>
+          </limit>
+        </axis>
+      </joint>
+    </model>
+
+    <model name="typhoon_h480">
+
+      <include>
+        <uri>model://typhoon_h480_ardupilot</uri>
+
+      </include>
+    <!-- add new camera -->
+    <link name='camera'>
+      <pose>0 0.0 -0.1 1.57 0 1.57</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.001</iyy>
+          <iyz>0</iyz>
+          <izz>0.001</izz>
+        </inertia>
+      </inertial>
+      <visual name='visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <cylinder>
+            <radius>0.025</radius>
+            <length>0.025</length>
+          </cylinder>
+        </geometry>
+         <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Grey</name>
+          </script>
+        </material>
+      </visual>
+      <sensor name="camera" type="camera">
+        <pose>0 0 0 -1.57 -1.57 3.14</pose>
+        <camera>
+          <horizontal_fov>1.0472</horizontal_fov>
+          <image>
+            <width>320</width>
+            <height>200</height>
+          </image>
+          <clip>
+            <near>0.05</near>
+            <far>1000</far>
+          </clip>
+        </camera>
+        <always_on>1</always_on>
+        <update_rate>10</update_rate>
+        <visualize>false</visualize>
+
+        <plugin name="irlock" filename="libArduCopterIRLockPlugin.so">
+            <fiducial>rover_irlock</fiducial>
+        </plugin>
+      </sensor>
+    </link>
+
+    <!-- attach camera -->
+    <joint type="revolute" name="base_camera_joint">
+      <pose>0 0 0.0 0 0 0</pose>
+      <parent>typhoon_h480::typhoon_h480::gimbal_small_2d::tilt_link</parent>
+      <child>camera</child>
+      <axis>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+        </limit>
+        <xyz>0 0 1</xyz>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+    </joint>
+  </model>
+  </world>
+</sdf>

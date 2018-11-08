@@ -1,0 +1,35 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name='iris_with_lidar'>
+    <pose>0 0 0 0 0 0</pose>
+      <include>
+        <uri>model://iris_with_standoffs_demo</uri>
+        <!--
+          IMPORTANT (for now):
+          zephyr_delta_wing model is -y forward, x-left and z-up
+          ardupilot plugin requires x-forward, y-left, z-up
+          for things to work properly, so it's important to set pose below
+        -->
+        <pose>0 0 0 0 0 0</pose>
+      </include>
+
+      <!-- For Hokuyo Lidar Payload -->
+      <include>
+        <uri>model://hokuyo</uri>
+        <pose>0 0 0.225 0 0 0</pose>
+      </include>
+      <joint name="lidar_mount" type="fixed">
+        <child>hokuyo::link</child>
+        <parent>iris_demo::iris::base_link</parent>
+        <axis>
+          <xyz>0 0 1</xyz>
+          <limit>
+            <upper>0</upper>
+            <lower>0</lower>
+          </limit>
+        </axis>
+      </joint>
+
+      <!-- For Another Lidar Payload -->
+    </model>
+  </sdf>

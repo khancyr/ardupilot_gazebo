@@ -1,0 +1,143 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name="Sikorsky-X2_ArduPilot">
+    <pose>0 0 0.5 0 0 0</pose>
+    <include>
+      <uri>model://sikorsky-X2</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+    <link name="cam_link">
+      <pose>0 0 0 0 0 0 </pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>0.0001</ixx>
+          <iyy>0.0001</iyy>
+          <izz>0.0001</izz>
+        </inertia>
+      </inertial>
+    <sensor name="chase_cam" type="camera">
+      <pose>-3 -1 1.4 0 0.37 0</pose>
+      <camera>
+        <horizontal_fov>1.2</horizontal_fov>
+        <image>
+          <width>1920</width>
+          <height>1080</height>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>1000</far>
+        </clip>
+      </camera>
+      <always_on>0</always_on>
+      <update_rate>60</update_rate>
+      <visualize>false</visualize>
+    </sensor>
+  </link>
+    <joint name="camera_mount" type="fixed">
+      <child>cam_link</child>
+      <parent>sikorsky-X2::base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+
+  <plugin name="ardupilot_plugin" filename="libArduPilotPlugin.so">
+      <fdm_addr>127.0.0.1</fdm_addr>
+      <fdm_port_in>9002</fdm_port_in>
+      <fdm_port_out>9003</fdm_port_out>
+      <modelXYZToAirplaneXForwardZDown>0 0 0 3.141593 0 0</modelXYZToAirplaneXForwardZDown>
+      <gazeboXYZToNED>0 0 0 3.141593 0 0</gazeboXYZToNED>
+      <imuName>Sikorsky-X2_ArduPilot::sikorsky-X2::imu_link::imu_sensor</imuName>
+      <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
+      <!--
+          incoming control command [0, 1]
+          so offset it by 0 to get [0, 1]
+          and divide max target by 1.
+          offset = 0
+          multiplier = 838 max rpm / 1 = 838
+        -->
+
+        <control channel="0">
+          <multiplier>1</multiplier>
+          <offset>-0.5</offset>
+          <type>POSITION</type>
+          <p_gain>1</p_gain>
+          <i_gain>0</i_gain>
+          <d_gain>0</d_gain>
+          <i_max>0</i_max>
+          <i_min>0</i_min>
+          <cmd_max>1</cmd_max>
+          <cmd_min>-1</cmd_min>
+          <jointName>sikorsky-X2::swashplate_joint</jointName>
+        </control>
+
+        <control channel="1">
+          <multiplier>1</multiplier>
+          <offset>-0.5</offset>
+          <type>POSITION</type>
+          <p_gain>1</p_gain>
+          <i_gain>0</i_gain>
+          <d_gain>0</d_gain>
+          <i_max>0</i_max>
+          <i_min>0</i_min>
+          <cmd_max>1</cmd_max>
+          <cmd_min>-1</cmd_min>
+          <jointName>sikorsky-X2::swashplate2_joint</jointName>
+        </control>
+
+        <!-- CCW Channel Positive Sign-->
+        <control channel="4">
+        <multiplier>500</multiplier>
+        <offset>0</offset>
+        <type>VELOCITY</type>
+        <p_gain>1</p_gain>
+        <i_gain>0</i_gain>
+        <d_gain>0</d_gain>
+        <i_max>0</i_max>
+        <i_min>0</i_min>
+        <cmd_max>6</cmd_max>
+        <cmd_min>0</cmd_min>
+        <jointName>sikorsky-X2::blade_up_joint</jointName>
+      </control>
+
+      <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+        <!-- CW Channel Negative Sign-->
+        <control channel="5">
+        <multiplier>-500</multiplier>
+        <type>VELOCITY</type>
+        <offset>0</offset>
+        <p_gain>1</p_gain>
+        <i_gain>0</i_gain>
+        <d_gain>0</d_gain>
+        <i_max>0</i_max>
+        <i_min>0</i_min>
+        <cmd_max>0</cmd_max>
+        <cmd_min>-6</cmd_min>
+        <jointName>sikorsky-X2::blade_down_joint</jointName>
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+      </control>
+
+      <!-- Compound Thruster Channel -->
+      <control channel="6">
+        <multiplier>2000</multiplier>
+        <offset>-0.1</offset>
+        <type>VELOCITY</type>
+        <p_gain>10</p_gain>
+        <i_gain>0.0</i_gain>
+        <d_gain>0</d_gain>
+        <i_max>0</i_max>
+        <i_min>0</i_min>
+        <cmd_max>5</cmd_max>
+        <cmd_min>0</cmd_min>
+        <jointName>sikorsky-X2::blade_rear_joint</jointName>
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+    </control>
+
+    </plugin>
+  </model>
+</sdf>

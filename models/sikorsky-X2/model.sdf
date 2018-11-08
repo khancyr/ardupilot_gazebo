@@ -1,0 +1,660 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <!--
+    IMPORTANT (for now):
+    Sikorsky X-2 model is -y forward, x-left and z-up
+    ardupilot plugin requires x-forward, y-left, z-up
+    for things to work properly, so it's important to set pose below
+  -->
+  <model name='sikorsky-X2'>
+    <pose>0 0 0 0 0 0</pose>
+    <enable_wind>false</enable_wind>
+    <link name='base_link'>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>1.39</mass>
+        <inertia>
+          <ixx>0.01811</ixx>
+          <ixy>0.00007</ixy>
+          <ixz>0.00016</ixz>
+          <iyy>0.03872</iyy>
+	        <iyz>0.00074</iyz>
+          <izz>0.02438</izz>
+        </inertia>
+      </inertial>
+      <collision name='base_link_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.75 0.2 .2</size>
+          </box>
+	         <!-- <mesh> -->
+        </geometry>
+      </collision>
+      <visual name='base_link_visual'>
+				<pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>10 10 10</scale>
+            <uri>model://sikorsky-X2/meshes/Sikorsky-X2_Fuselage2.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Grey</name>
+            <uri>__default__</uri>
+          </script>
+        </material>
+      </visual>
+    </link>
+    <link name="virtual_landing">
+      <pose>0.08 0 -0.14 0 0 0</pose>
+      <inertial>
+        <mass>0.05</mass>
+        <inertia>
+          <ixx>0.0043137104</ixx>
+          <ixy>0</ixy>
+          <iyy>0.00387382402</iyy>
+          <ixz>0</ixz>
+          <iyz>0</iyz>
+          <izz>0.00809845106</izz>
+        </inertia>
+      </inertial>
+      <collision name="virtual_landing_collision">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.6 0.2 .03</size>
+          </box>
+        </geometry>
+        <surface>
+          <contact>
+            <ode>
+              <kp>10</kp>
+              <kd>5</kd>
+              <min_depth>0.001</min_depth>
+              <max_vel>0.5</max_vel>
+            </ode>
+          </contact>
+          <friction>
+            <ode>
+              <mu>0.5</mu>
+              <mu2>0.5</mu2>
+              <fdir1>1 0 0</fdir1>
+            </ode>
+          </friction>
+        </surface>
+      </collision>
+	<!-- <visual name ="virtual_landing_visual">
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <box>
+            <size>0.4 0.2 .025</size>
+          </box>
+        </geometry>
+        </visual> -->
+    </link>
+    <joint name="skid_pad_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>virtual_landing</child>
+      <axis>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+        </limit>
+        <xyz>1 0 0</xyz>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+    </joint>
+    <link name='imu_link'>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.0015</mass>
+        <inertia>
+          <ixx>0.0001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.0001</iyy>
+          <iyz>0</iyz>
+          <izz>0.0001</izz>
+        </inertia>
+      </inertial>
+      <sensor name="imu_sensor" type="imu">
+        <pose>0 0 0 3.141593 0 0</pose>
+        <always_on>1</always_on>
+        <update_rate>1000.0</update_rate>
+      </sensor>
+    </link>
+    <joint name='imu_joint' type='revolute'>
+      <child>imu_link</child>
+      <parent>base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <damping>1.0</damping>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+        </ode>
+      </physics>
+      </joint>
+
+    <link name ='swashplate'>
+      <pose>0.0 0 0.11 0 0 0</pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>0.0005</ixx>>
+          <!-- <ixx>0.0005</ixx> -->
+          <iyy>0.00001</iyy>
+          <!-- <iyy>0.005</iyy> -->
+          <izz>0.0001</izz>
+        </inertia>
+      </inertial>
+    </link>
+    <link name ='swashplate2'>
+      <pose>0 0 0.11 0 0 0</pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>0.00001</ixx>
+          <!-- <ixx>0.005</ixx> -->
+          <iyy>0.0005</iyy>
+          <izz>0.0001</izz>
+        </inertia>
+      </inertial>
+      <!-- <visual name ='swashplate_visual'>
+        <pose>0.0 0 0.0 0 0 0</pose>
+        <geometry>
+            <sphere>
+              <radius>0.01</radius>
+            </sphere>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/Turquoise</name>
+            <uri>__default__</uri>
+          </script>
+        </material>
+      </visual> -->
+      <!-- <collision name='swashplate_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+           <mesh>
+            <scale>1 1 1</scale>
+            <uri>model://sikorsky-X2/meshes/Sikorsky-X2_Rotor_Hub.dae</uri>
+          </mesh>
+        </geometry>
+      </collision> -->
+    </link>
+
+    <link name='blade_up'>
+      <pose>0 0.0 0.12 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.04</mass>
+        <inertia>
+          <!-- <ixx>9.75e-05</ixx> -->
+          <ixx>0.00001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000166704</iyy>
+          <iyz>0</iyz>
+          <izz>0.0008</izz>
+        </inertia>
+      </inertial>
+
+      <!--
+      <collision name='blade_up_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>10 10 10</scale>
+            <uri>model://sikorsky-X2/meshes/Sikorsky-X2_Blade_Up2.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+    -->
+      <visual name='blade_up_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>10 10 10</scale>
+            <uri>model://sikorsky-X2/meshes/Sikorsky-X2_Blade_Up2.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGrey</name>
+            <uri>__default__</uri>
+          </script>
+        </material>
+      </visual>
+      <!-- <visual name = 'CP_Visual_up'>
+        <pose>0 0.20 0.005 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.01</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/Red</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name = 'CP_Visual_up2'>
+          <pose>0 -0.20 0.005 0 0 0</pose>
+            <geometry>
+              <sphere>
+                <radius>0.01</radius>
+              </sphere>
+            </geometry>
+            <material>
+              <script>
+                <name>Gazebo/Red</name>
+                <uri>__default__</uri>
+              </script>
+            </material>
+          </visual> -->
+      <!-- <self_collide>0</self_collide> -->
+    </link>
+
+    <link name='blade_down'>
+      <pose>0 0 0.09 0 0 0</pose>
+      <inertial>
+        <mass>0.04</mass>
+        <inertia>
+          <!-- <ixx>9.75e-05</ixx> -->
+          <ixx>0.00001</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000166704</iyy>
+          <iyz>0</iyz>
+          <izz>0.0008</izz>
+        </inertia>
+      </inertial>
+      <visual name='blade_down_visual'>
+        <pose>0 0 0 0 0 0.79</pose>
+        <geometry>
+          <mesh>
+            <scale>10 10 10</scale>
+							<uri>model://sikorsky-X2/meshes/Sikorsky-X2_Blade_Down2.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <name>Gazebo/DarkGrey</name>
+            <uri>__default__</uri>
+          </script>
+        </material>
+      </visual>
+      <!-- <visual name = 'CP_Visual_Down'>
+        <pose>0 0.20 0.005 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.01</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/White</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name = 'CP_Visual_Down2'>
+          <pose>0 -0.20 0.005 0 0 0</pose>
+            <geometry>
+              <sphere>
+                <radius>0.01</radius>
+              </sphere>
+            </geometry>
+            <material>
+              <script>
+                <name>Gazebo/White</name>
+                <uri>__default__</uri>
+              </script>
+            </material>
+          </visual> -->
+      <!-- <self_collide>0</self_collide> -->
+    </link>
+
+    <link name='blade_rear'>
+      <pose>-0.385 0 0 0 0 0</pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <!-- <ixx>0.00008</ixx> -->
+          <ixx>0.00002</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>0.000003187</iyy>
+          <iyz>0</iyz>
+          <izz>0.000002</izz>
+        </inertia>
+      </inertial>
+      <!-- <collision name='blade_rear_collision'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+              <scale>10 10 10</scale>
+            <uri>model://sikorsky-X2/meshes/Sikorsky-X2_Blade_Rear.dae</uri>
+          </mesh>
+        </geometry>
+      </collision> -->
+      <visual name='blade_rear_visual'>
+        <pose>0 0 0 0 0 0</pose>
+        <geometry>
+          <mesh>
+            <scale>10 10 10</scale>
+            <uri>model://sikorsky-X2/meshes/Sikorsky-X2_Blade_Rear.dae</uri>
+          </mesh>
+        </geometry>
+      </visual>
+      <!-- <visual name = 'CP_Visual_Rear'>
+        <pose>0 0 0.04 0 0 0</pose>
+          <geometry>
+            <sphere>
+              <radius>0.01</radius>
+            </sphere>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/White</name>
+              <uri>__default__</uri>
+            </script>
+          </material>
+        </visual>
+        <visual name = 'CP_Visual_Rear2'>
+          <pose>0 0 -0.04 0 0 0</pose>
+            <geometry>
+              <sphere>
+                <radius>0.01</radius>
+              </sphere>
+            </geometry>
+            <material>
+              <script>
+                <name>Gazebo/White</name>
+                <uri>__default__</uri>
+              </script>
+            </material>
+          </visual> -->
+    </link>
+
+    <!-- Control Surfaces Joints -->
+    <joint name='blade_up_joint' type='revolute'>
+      <child>blade_up</child>
+      <parent>swashplate2</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+16</lower>
+          <upper>1e+16</upper>
+          <!-- <effort>-1</effort>
+          <velocity>-1</velocity> -->
+        </limit>
+        <dynamics>
+              <damping>0.002</damping>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+        </ode>
+      </physics>
+    </joint>
+
+    <joint name='blade_down_joint' type='revolute'>
+      <child>blade_down</child>
+      <parent>swashplate2</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <lower>-1e+12</lower>
+          <upper>1e+12</upper>
+          <!-- <effort>-1</effort>
+          <velocity>-1</velocity> -->
+        </limit>
+        <dynamics>
+          <damping>0.002</damping>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+        </ode>
+      </physics>
+    </joint>
+
+    <joint name='blade_rear_joint' type='revolute'>
+      <pose>0 0 0 0 0 0</pose>
+      <parent>base_link</parent>
+      <child>blade_rear</child>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>-1e+12</lower>
+          <upper>1e+12</upper>
+          <!-- <effort>-1</effort>
+          <velocity>-1</velocity> -->
+        </limit>
+        <dynamics>
+          <damping>0.002</damping>
+        </dynamics>
+      <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+        </ode>
+      </physics>
+    </joint>
+
+    <joint name='swashplate_joint' type='revolute'>
+      <parent>base_link</parent>
+      <child>swashplate</child>
+      <pose>0 0 0 0 0 0</pose>
+      <axis>
+        <xyz>1 0 0 </xyz>
+        <limit>
+          <lower>-0.2</lower>
+          <upper>0.2</upper>
+        </limit>
+        <dynamics>
+            <damping>0.3</damping>
+        </dynamics>
+        <use_parent_model_frame>true</use_parent_model_frame>
+        </axis>
+        <physics>
+          <ode>
+            <implicit_spring_damper>1</implicit_spring_damper>
+          </ode>
+        </physics>
+    </joint>
+
+    <joint name='swashplate2_joint' type='revolute'>
+      <parent>swashplate</parent>
+      <child>swashplate2</child>
+      <pose>0 0 0 0 0 0</pose>
+      <axis>
+        <xyz>0 1 0 </xyz>
+        <limit>
+          <lower>-0.2</lower>
+          <upper>0.2</upper>
+        </limit>
+        <dynamics>
+          <damping>0.3</damping>
+        </dynamics>
+        <use_parent_model_frame>true</use_parent_model_frame>
+      </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+        </ode>
+      </physics>
+    </joint>
+
+    <!-- plugins -->
+    <plugin name="Blade_Up_Plugin_01" filename="libLiftDragPlugin.so">
+      <a0>0.05</a0>
+      <alpha_stall>0.30</alpha_stall>
+      <cla>1.75</cla>
+      <cda>0.10</cda>
+      <cma>0.00</cma>
+      <cla_stall>0.0</cla_stall>
+      <cda_stall>0.0</cda_stall>
+      <cma_stall>0.0</cma_stall>
+      <area>0.007</area>
+      <air_density>1.225</air_density>
+      <cp>0 0.24 0.005</cp>
+      <forward>-1 0 0</forward>
+      <upward>0 0 1</upward>
+      <radial_symmetry>false</radial_symmetry>
+      <link_name>blade_up</link_name>
+    </plugin>
+
+    <plugin name="Blade_Up_Plugin_02" filename="libLiftDragPlugin.so">
+      <a0>0.05</a0>
+      <alpha_stall>0.30</alpha_stall>
+      <cla>1.75</cla>
+      <cda>0.10</cda>
+      <cma>0.00</cma>
+      <cla_stall>0.0</cla_stall>
+      <cda_stall>0.0</cda_stall>
+      <cma_stall>0.0</cma_stall>
+      <area>0.007</area>
+      <air_density>1.225</air_density>
+      <cp>0 -0.24 0.005</cp>
+      <forward>1 0 0</forward>
+      <upward>0 0 1</upward>
+      <radial_symmetry>false</radial_symmetry>
+      <link_name>blade_up</link_name>
+    </plugin>
+
+
+    <plugin name="Blade_Down_Plugin_01" filename="libLiftDragPlugin.so">
+      <a0>0.05</a0>
+      <alpha_stall>0.30</alpha_stall>
+      <cla>1.75</cla>
+      <cda>0.10</cda>
+      <cma>0.00</cma>
+      <cla_stall>0.0</cla_stall>
+      <cda_stall>0.0</cda_stall>
+      <cma_stall>0.0</cma_stall>
+      <area>0.007</area>
+      <air_density>1.225</air_density>
+      <cp>0 0.24 0.005</cp>
+      <forward>1 0 0</forward>
+      <upward>0 0 1</upward>
+      <radial_symmetry>false</radial_symmetry>
+      <link_name>blade_down</link_name>
+    </plugin>
+
+    <plugin name="Blade_Down_Plugin_02" filename="libLiftDragPlugin.so">
+      <a0>0.05</a0>
+      <alpha_stall>0.3</alpha_stall>
+      <cla>1.75</cla>
+      <cda>0.10</cda>
+      <cma>0.00</cma>
+      <cla_stall>0.0</cla_stall>
+      <cda_stall>0.0</cda_stall>
+      <cma_stall>0.0</cma_stall>
+      <area>0.007</area>
+      <air_density>1.225</air_density>
+      <cp>0 -0.24 0.005</cp>
+      <forward>-1 0 0</forward>
+      <upward>0 0 1</upward>
+      <radial_symmetry>false</radial_symmetry>
+      <link_name>blade_down</link_name>
+    </plugin>
+
+
+    <!-- Auxiliary Thruster -->
+    <plugin name="Blade_Rear_Plugin_01" filename="libLiftDragPlugin.so">
+      <a0>0.25</a0>
+      <alpha_stall>0.25</alpha_stall>
+      <cla>3.5</cla>
+      <cda>0.10</cda>
+      <cma>0.00</cma>
+      <cla_stall>0.0</cla_stall>
+      <cda_stall>0.0</cda_stall>
+      <cma_stall>0.0</cma_stall>
+      <air_density>1.225</air_density>
+      <area>0.001</area>
+      <cp>0 0 0.04</cp>
+      <forward>0 -1 0</forward>
+      <upward>1 0 0</upward>
+      <radial_symmetry>false</radial_symmetry>
+      <link_name>blade_rear</link_name>
+    </plugin>
+
+    <plugin name="Blade_Rear_Plugin_02" filename="libLiftDragPlugin.so">
+      <a0>0.25</a0>
+      <alpha_stall>0.25</alpha_stall>
+      <cla>3.5</cla>
+      <cda>0.10</cda>
+      <cma>0.00</cma>
+      <cla_stall>0.0</cla_stall>
+      <cda_stall>0.0</cda_stall>
+      <cma_stall>0.0</cma_stall>
+      <air_density>1.225</air_density>
+      <area>0.001</area>
+      <cp>0 0 -0.04</cp>
+      <forward>0 1 0</forward>
+      <upward>1 0 0</upward>
+      <radial_symmetry>false</radial_symmetry>
+      <link_name>blade_rear</link_name>
+    </plugin>
+
+    <!-- <plugin name="Blade_Rear_Plugin_03" filename="libLiftDragPlugin.so">
+      <a0>0.2</a0>
+      <alpha_stall>1.4</alpha_stall>
+      <cla>2.50</cla>
+      <cda>0.0</cda>
+      <cma>0.00</cma>
+      <cla_stall>0.0</cla_stall>
+      <cda_stall>0.0</cda_stall>
+      <cma_stall>0.0</cma_stall>
+      <air_density>1.225</air_density>
+      <area>0.001</area>
+      <cp>0 0.04 0</cp>
+      <forward>0 0 1</forward>
+      <upward>1 0 0</upward>
+      <radial_symmetry>true</radial_symmetry>
+      <link_name>blade_rear</link_name>
+    </plugin>
+
+    <plugin name="Blade_Rear_Plugin_04" filename="libLiftDragPlugin.so">
+      <a0>0.2</a0>
+      <alpha_stall>1.4</alpha_stall>
+      <cla>2.5</cla>
+      <cda>0.0</cda>
+      <cma>0.00</cma>
+      <cla_stall>0.0</cla_stall>
+      <cda_stall>0.0</cda_stall>
+      <cma_stall>0.0</cma_stall>
+      <air_density>1.225</air_density>
+      <area>0.001</area>
+      <cp>0 -0.04 0</cp>
+      <forward>0 0 -1</forward>
+      <upward>1 0 0</upward>
+      <radial_symmetry>true</radial_symmetry>
+      <link_name>blade_rear</link_name>
+    </plugin> -->
+
+    <static>0</static>
+  </model>
+</sdf>

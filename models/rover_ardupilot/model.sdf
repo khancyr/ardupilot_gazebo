@@ -1,0 +1,164 @@
+<?xml version='1.0'?>
+<sdf version='1.6'>
+  <model name="rover_ardupilot">
+    <pose>0 0 0.5 0 0 0</pose>
+    <include>
+      <uri>model://husky</uri>
+      <pose>0 0 0 0 0 0</pose>
+    </include>
+
+    <link name="cam_link">
+      <pose>0 0 0 0 0 0 </pose>
+      <inertial>
+        <mass>0.01</mass>
+        <inertia>
+          <ixx>0.0001</ixx>
+          <iyy>0.0001</iyy>
+          <izz>0.0001</izz>
+        </inertia>
+      </inertial>
+    <sensor name="chase_cam" type="camera">
+      <pose>-3 -1 1.4 0 0.37 0</pose>
+      <camera>
+        <horizontal_fov>1.2</horizontal_fov>
+        <image>
+          <width>1920</width>
+          <height>1080</height>
+        </image>
+        <clip>
+          <near>0.1</near>
+          <far>1000</far>
+        </clip>
+      </camera>
+      <always_on>0</always_on>
+      <update_rate>60</update_rate>
+      <visualize>false</visualize>
+    </sensor>
+  </link>
+    <joint name="camera_mount" type="fixed">
+      <child>cam_link</child>
+      <parent>husky::base_link</parent>
+      <axis>
+        <xyz>0 0 1</xyz>
+        <limit>
+          <upper>0</upper>
+          <lower>0</lower>
+        </limit>
+      </axis>
+    </joint>
+
+    <link name='imu_link'>
+      <!-- <pose>0 0 0 0 0 3.1415927</pose> -->
+      <pose>0 0 0 0 0 0</pose>
+      <inertial>
+        <pose>0 0 0 0 0 0</pose>
+        <mass>0.015</mass>
+        <inertia>
+          <ixx>1e-05</ixx>
+          <ixy>0</ixy>
+          <ixz>0</ixz>
+          <iyy>1e-05</iyy>
+          <iyz>0</iyz>
+          <izz>1e-05</izz>
+        </inertia>
+      </inertial>
+      <sensor name="imu_sensor" type="imu">
+        <pose>0 0 0 3.141593 0 0</pose>
+        <always_on>1</always_on>
+        <update_rate>1000.0</update_rate>
+      </sensor>
+    </link>
+    <joint name='imu_joint' type='revolute'>
+      <child>imu_link</child>
+      <parent>husky::base_link</parent>
+      <axis>
+        <xyz>1 0 0</xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>0</upper>
+          <effort>0</effort>
+          <velocity>0</velocity>
+        </limit>
+        <dynamics>
+          <damping>0.7</damping>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
+      </axis>
+    </joint>
+
+    <plugin name="ArduCopter_Plugin" filename="libArduPilotPlugin.so">
+      <fdm_addr>127.0.0.1</fdm_addr>
+      <fdm_port_in>9012</fdm_port_in>
+      <fdm_port_out>9013</fdm_port_out>
+      <!--
+          Require by APM :
+          Only change model and gazebo from XYZ to XY-Z coordinates
+      -->
+      <!-- 3.141593 -->
+      <modelXYZToAirplaneXForwardZDown>0 0 0 3.141593 0 0</modelXYZToAirplaneXForwardZDown>
+      <gazeboXYZToNED>0 0 0 3.141593 0 0</gazeboXYZToNED>
+      <imuName>rover_ardupilot::imu_link::imu_sensor</imuName>
+      <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
+      <!--
+          incoming control command [0, 1]
+          so offset it by 0 to get [0, 1]
+          and divide max target by 1.
+          offset = 0
+          multiplier = 838 max rpm / 1 = 838
+        -->
+      <control channel="0">
+        <type>VELOCITY</type>
+        <offset>-0.5</offset>
+        <p_gain>1</p_gain>
+        <i_gain>0</i_gain>
+        <d_gain>0</d_gain>
+        <i_max>0</i_max>
+        <i_min>0</i_min>
+        <cmd_max>10</cmd_max>
+        <cmd_min>-10</cmd_min>
+        <jointName>husky::front_left_joint</jointName>
+        <multiplier>70</multiplier>
+      </control>
+      <control channel="2">
+        <type>VELOCITY</type>
+        <offset>-0.5</offset>
+        <p_gain>1</p_gain>
+        <i_gain>0</i_gain>
+        <d_gain>0</d_gain>
+        <i_max>0</i_max>
+        <i_min>0</i_min>
+        <cmd_max>10</cmd_max>
+        <cmd_min>-10</cmd_min>
+        <jointName>husky::front_right_joint</jointName>
+        <multiplier>70</multiplier>
+      </control>
+      <control channel="0">
+        <type>VELOCITY</type>
+        <offset>-0.5</offset>
+        <p_gain>1</p_gain>
+        <i_gain>0</i_gain>
+        <d_gain>0</d_gain>
+        <i_max>0</i_max>
+        <i_min>0</i_min>
+        <cmd_max>10</cmd_max>
+        <cmd_min>-10</cmd_min>
+        <jointName>husky::back_left_joint</jointName>
+        <multiplier>70</multiplier>
+      </control>
+      <control channel="2">
+        <type>VELOCITY</type>
+        <offset>-0.5</offset>
+        <p_gain>1</p_gain>
+        <i_gain>0</i_gain>
+        <d_gain>0</d_gain>
+        <i_max>0</i_max>
+        <i_min>0</i_min>
+        <cmd_max>10</cmd_max>
+        <cmd_min>-10</cmd_min>
+        <jointName>husky::back_right_joint</jointName>
+        <multiplier>70</multiplier>
+      </control>
+    </plugin>
+
+  </model>
+</sdf>

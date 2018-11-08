@@ -142,7 +142,7 @@ You will need to edit your world for any combination of Rover, Plane, Copter, et
 Additional Note for GCS Connection
 You will also need to edit ArduPilot Parameter SYSID_THISMAV to be unique from one another for the GCS connection
 
-# Example
+### Example
 See simulating 3 IRIS quadcopter at once tutorial from Jonathan Lopes Florêncio
 https://www.youtube.com/watch?v=3c7EhVMaqKY&feature=youtu.be
 

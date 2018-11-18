@@ -293,8 +293,8 @@ void ArduCopterIRLockPlugin::Publish(const std::string &/*_fiducial*/,
   pkt.size_x = static_cast<float>(1);
   pkt.size_y = static_cast<float>(1);
 
-  std::cerr << "fiducial '" << _fiducial << "':" << _x << ", " << _y
-      << ", pos: " << pkt.pos_x << ", " << pkt.pos_y << std::endl;
+//   std::cerr << "fiducial '" << _fiducial << "':" << _x << ", " << _y
+//       << ", pos: " << pkt.pos_x << ", " << pkt.pos_y << std::endl;
 
   struct sockaddr_in sockaddr;
   memset(&sockaddr, 0, sizeof(sockaddr));

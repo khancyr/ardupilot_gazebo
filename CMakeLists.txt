@@ -11,11 +11,14 @@ project(ardupilot_sitl_gazebo)
 find_package(gazebo REQUIRED)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${GAZEBO_CXX_FLAGS}")
 
-if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
-    message(FATAL_ERROR "You need at least Gazebo 8.0. Your version: ${GAZEBO_VERSION}")
-else()
-    message("Gazebo version: ${GAZEBO_VERSION}")
+if("${GAZEBO_VERSION}" VERSION_LESS "7.0")
+    message(FATAL_ERROR "You need at least Gazebo 7.0. Your version: ${GAZEBO_VERSION}")
 endif()
+
+if("${GAZEBO_VERSION}" VERSION_GREATER "7")
+    message(FATAL_ERROR "You need Gazebo 7.X.Y Your version: ${GAZEBO_VERSION}")
+endif()
+message("Gazebo version: ${GAZEBO_VERSION}")
 
 ###### COMPILE RULES ######
 include(CheckCXXCompilerFlag)

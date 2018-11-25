@@ -80,7 +80,7 @@ ROVER
 
 ````
 On 1st Terminal(Launch Ardupilot SITL)
-sim_vehicle.py -v APMrover2 -f gazebo-rover  -m --mav10 --map --console -I0
+sim_vehicle.py -v APMrover2 -f gazebo-rover  -m --mav10 --map --console -I1
 
 On 2nd Termianal(Launch Gazebo with Rover, Retrieved from Husky Model)
 gazebo --verbose rover_ardupilot.world
@@ -147,7 +147,7 @@ Additional Note for GCS Connection
 You will also need to edit ArduPilot Parameter SYSID_THISMAV to be unique from one another for the GCS connection
 
 ### Example
-See simulating 3 IRIS quadcopter at once tutorial from Jonathan Lopes Florêncio
+Look simulation of 3 IRIS quadcopter at once from Jonathan Lopes Florêncio
 https://www.youtube.com/watch?v=3c7EhVMaqKY&feature=youtu.be
 
 ## Troubleshooting

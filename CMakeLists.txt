@@ -15,7 +15,7 @@ if("${GAZEBO_VERSION}" VERSION_LESS "7.0")
     message(FATAL_ERROR "You need at least Gazebo 7.0. Your version: ${GAZEBO_VERSION}")
 endif()
 
-if("${GAZEBO_VERSION}" VERSION_GREATER "7")
+if("${GAZEBO_VERSION}" VERSION_GREATER_EQUAL "8")
     message(FATAL_ERROR "You need Gazebo 7.X.Y Your version: ${GAZEBO_VERSION}")
 endif()
 message("Gazebo version: ${GAZEBO_VERSION}")

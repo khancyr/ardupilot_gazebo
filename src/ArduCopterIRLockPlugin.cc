@@ -233,9 +233,13 @@ void ArduCopterIRLockPlugin::OnNewFrame(const unsigned char * /*_image*/,
     if (!camera->IsVisible(vis))
       continue;
 
+    #if GAZEBO_MAJOR_VERSION < 9
     ignition::math::Vector2i pt = GetScreenSpaceCoords(
         vis->GetWorldPose().pos.Ign(), camera);
-
+    #else 
+    ignition::math::Vector2i pt = GetScreenSpaceCoords(
+        vis->WorldPose().Pos(), camera);
+    #endif 
     // use selection buffer to check if visual is occluded by other entities
     // in the camera view
     Ogre::Entity *entity =
@@ -259,7 +263,11 @@ void ArduCopterIRLockPlugin::OnNewFrame(const unsigned char * /*_image*/,
 
     if (result && result->GetRootVisual() == vis)
     {
+      #if GAZEBO_MAJOR_VERSION < 9
       this->Publish(vis->GetName(), pt.X(), pt.Y());
+      #else
+      this->Publish(vis->Name(), pt.X(), pt.Y());
+      #endif
     }
   }
 }

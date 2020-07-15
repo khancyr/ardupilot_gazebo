@@ -39,7 +39,7 @@ link_directories(
 set (plugins_single_header
         ArduPilotPlugin
         ArduCopterIRLockPlugin
-				ArduCopterPlugin
+	ArduCopterPlugin
         # GimbalSmall2dPlugin
 	# WindPlugin
         )

@@ -1,4 +1,16 @@
 # Ardupilot Gazebo Plugin & Models
+- [Ardupilot Gazebo Plugin & Models](#ardupilot-gazebo-plugin--models)
+  - [Requirements :](#requirements-)
+  - [Disclamer :](#disclamer-)
+  - [Repository Structure :](#repository-structure-)
+- [Getting Started :](#getting-started-)
+  - [How to Install :](#how-to-install-)
+  - [HELP](#help)
+    - [How to Launch :](#how-to-launch-)
+    - [Multi-Vehicle simulation](#multi-vehicle-simulation)
+    - [Example](#example)
+  - [Troubleshooting](#troubleshooting)
+    - [Missing libArduPilotPlugin](#missing-libardupilotplugin)
 
 ## Requirements :
 Native Ubuntu Xenial(16.04 LTS) able to run full 3D graphics.
@@ -17,8 +29,7 @@ solution retreived from here http://answers.gazebosim.org/question/13214/virtual
 **Note :** This just enables running gazebo in virtual machine, does not guarantee the performance and Gazebo require much of CPU & GPU processing power depending on what you are running the simulation.
 
 ArduPilot setup for SITL launch
-Gazebo version 7.x or 8.x  
-The gazebo9 branch will works on gazebo >= 9.x  
+Gazebo version 7 or later
 
 ## Disclamer :
 This is a playground until I get some time to push the correct patch to gazebo master (I got hard time to work with mercurial..)!  
@@ -57,6 +68,14 @@ OR
 sudo apt-get install libgazebo8-dev
 ````
 
+OR
+
+**For Gazebo 9**
+````
+sudo apt-get install libgazebo9-dev
+````
+
+
 **Common :**
 ````
 git clone https://github.com/SwiftGust/ardupilot_gazebo
@@ -79,6 +98,7 @@ source /usr/share/gazebo/setup.sh
 export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/models:${GAZEBO_MODEL_PATH}
 export GAZEBO_MODEL_PATH=~/ardupilot_gazebo/models_gazebo:${GAZEBO_MODEL_PATH}
 export GAZEBO_RESOURCE_PATH=~/ardupilot_gazebo/worlds:${GAZEBO_RESOURCE_PATH}
+export GAZEBO_PLUGIN_PATH=~/ardupilot_gazebo/build:${GAZEBO_PLUGIN_PATH}
 ````
 
 Install is complete
@@ -94,29 +114,33 @@ On new terminal, Launch Gazebo with basic demo world.
 
 **ROVER**
 
+
+On 1st Terminal(Launch ArduRover SITL)
 ````
-On 1st Terminal(Launch Ardupilot SITL)
 sim_vehicle.py -v APMrover2 -f gazebo-rover  -m --mav10 --map --console -I1
-
+````
 On 2nd Termianal(Launch Gazebo with differential drive Rover model, Retrieved from Husky Model)
+````
 gazebo --verbose rover_ardupilot.world
-
 ````
 **COPTER (3DR IRIS)**
+On 1st Terminal(Launch ArduCopter SITL)
 ````
-On 1st Terminal(Launch Ardupilot SITL)
 sim_vehicle.py -v ArduCopter -f gazebo-iris  -m --mav10 --map --console -I0
-
+````
 On 2nd Terminal(Launch Gazebo with demo 3DR Iris model)
+````
 gazebo --verbose iris_ardupilot.world
 ````
 
 **PLANE**
+On 1st Terminal(Launch ArduPlane SITL)
 ````
-On 1st Terminal(Launch Ardupilot SITL)
 sim_vehicle.py -v ArduPlane -f gazebo-zephyr  -m --mav10 --map --console -I0
+````
 
 On 2nd Terminal(Launch Gazebo with demo Zephyr flying wing model)
+````
 gazebo --verbose zephyr_ardupilot_demo.world
 ````
 
@@ -143,7 +167,7 @@ Download it from here and follow the installation guide.
 
 https://donlakeflyer.gitbooks.io/qgroundcontrol-user-guide/en/download_and_install.html
 
-## Multi-Vehicle simulation
+### Multi-Vehicle simulation
 This section explains how to connect any combination of multi-vehicles of ArduPilot
 
 For the multi-vehicle connection, port number is increased by 10 per instance(#)
@@ -168,8 +192,7 @@ https://www.youtube.com/watch?v=3c7EhVMaqKY&feature=youtu.be
 
 ## Troubleshooting
 
-### Missing libArduPilotPlugin.so... etc
-
+### Missing libArduPilotPlugin
 In case you see this message when you launch gazebo with demo worlds, check you have no error after sudo make install.  
 If no error use "ls" on the install path given to see if the plugin is really here.  
 If this is correct, check with "cat /usr/share/gazebo/setup.sh" the variable GAZEBO_PLUGIN_PATH. It should be the same as the install path. If not use "cp" to copy the lib to right path.
@@ -180,4 +203,4 @@ If this is correct, check with "cat /usr/share/gazebo/setup.sh" the variable GAZ
 sudo cp -a /usr/lib/x86_64-linux-gnu/gazebo-7.0/plugins/ /usr/lib/x86_64-linux-gnu/gazebo-7/
 ````
 
-Path mismatch is confirmed as ROS's glitch. It only happens with Gazebo 7
+Path mismatch is confirmed as Gazebo's glitch. It only happens with Gazebo version 7.

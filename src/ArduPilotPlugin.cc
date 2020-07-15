@@ -447,6 +447,7 @@ void ArduPilotPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   this->dataPtr->model = _model;
   this->dataPtr->modelName = this->dataPtr->model->GetName();
 
+  _model->Print("[ArduPilotPlugin] Model :");
   // modelXYZToAirplaneXForwardZDown brings us from gazebo model frame:
   // x-forward, y-left, z-up
   // to the aerospace convention: x-forward, y-right, z-down
@@ -910,9 +911,13 @@ void ArduPilotPlugin::OnUpdate()
 {
   std::lock_guard<std::mutex> lock(this->dataPtr->mutex);
 
+  #if GAZEBO_MAJOR_VERSION < 9
   const gazebo::common::Time curTime =
     this->dataPtr->model->GetWorld()->GetSimTime();
-
+  #else
+  const gazebo::common::Time curTime =
+    this->dataPtr->model->GetWorld()->SimTime();
+  #endif 
   // Update the control surfaces and publish the new state.
   if (curTime > this->dataPtr->lastControllerUpdateTime)
   {
@@ -988,6 +993,7 @@ void ArduPilotPlugin::ApplyMotorForces(const double _dt)
         const double error = vel - velTarget;
         const double force = this->dataPtr->controls[i].pid.Update(error, _dt);
         this->dataPtr->controls[i].joint->SetForce(0, force);
+        // gzdbg << "[" << i << "]" << "[vel, error, force] : " << vel << ", " << error << ", " << force << std::endl;
       }
       else if (this->dataPtr->controls[i].type == "POSITION")
       {
@@ -996,7 +1002,11 @@ void ArduPilotPlugin::ApplyMotorForces(const double _dt)
         const double scaler = 5*(upper_Lim - lower_Lim);
         */
         const double posTarget = this->dataPtr->controls[i].cmd;
+        #if GAZEBO_MAJOR_VERSION < 9
         const double pos = this->dataPtr->controls[i].joint->GetAngle(0).Radian();
+        #else
+        const double pos = this->dataPtr->controls[i].joint->Position(0);
+        #endif
         const double error = pos - posTarget;
         const double force = this->dataPtr->controls[i].pid.Update(error, _dt);
         this->dataPtr->controls[i].joint->SetForce(0, force);
@@ -1016,6 +1026,7 @@ void ArduPilotPlugin::ApplyMotorForces(const double _dt)
       if (this->dataPtr->controls[i].type == "VELOCITY")
       {
         this->dataPtr->controls[i].joint->SetVelocity(0, this->dataPtr->controls[i].cmd);
+        gzdbg << "[" << i << "]" << "command : " << this->dataPtr->controls[i].cmd << std::endl;
       }
       else if (this->dataPtr->controls[i].type == "POSITION")
       {
@@ -1192,7 +1203,11 @@ void ArduPilotPlugin::SendState() const
   // send_fdm
   fdmPacket pkt;
 
+  #if GAZEBO_MAJOR_VERSION < 9
   pkt.timestamp = this->dataPtr->model->GetWorld()->GetSimTime().Double();
+  #else
+  pkt.timestamp = this->dataPtr->model->GetWorld()->SimTime().Double();
+  #endif
 
   // asssumed that the imu orientation is:
   //   x forward
@@ -1240,9 +1255,15 @@ void ArduPilotPlugin::SendState() const
   // adding modelXYZToAirplaneXForwardZDown rotates
   //   from: model XYZ
   //   to: airplane x-forward, y-left, z-down
+  #if GAZEBO_MAJOR_VERSION < 9
   const ignition::math::Pose3d gazeboXYZToModelXForwardZDown =
     this->modelXYZToAirplaneXForwardZDown +
     this->dataPtr->model->GetWorldPose().Ign();
+  #else
+  const ignition::math::Pose3d gazeboXYZToModelXForwardZDown =
+    this->modelXYZToAirplaneXForwardZDown +
+    this->dataPtr->model->WorldPose();
+  #endif
 
   // get transform from world NED to Model frame
   const ignition::math::Pose3d NEDToModelXForwardZUp =
@@ -1274,8 +1295,13 @@ void ArduPilotPlugin::SendState() const
   // Get NED velocity in body frame *
   // or...
   // Get model velocity in NED frame
+  #if GAZEBO_MAJOR_VERSION < 9
   const ignition::math::Vector3d velGazeboWorldFrame =
     this->dataPtr->model->GetLink()->GetWorldLinearVel().Ign();
+  #else
+  const ignition::math::Vector3d velGazeboWorldFrame =
+    this->dataPtr->model->GetLink()->WorldLinearVel();
+  #endif
   const ignition::math::Vector3d velNEDFrame =
     this->gazeboXYZToNED.Rot().RotateVectorReverse(velGazeboWorldFrame);
   pkt.velocityXYZ[0] = velNEDFrame.X();

@@ -561,8 +561,11 @@ void ArduCopterPlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 void ArduCopterPlugin::OnUpdate()
 {
   std::lock_guard<std::mutex> lock(this->dataPtr->mutex);
-
+#if GAZEBO_MAJOR_VERSION < 9
   gazebo::common::Time curTime = this->dataPtr->model->GetWorld()->GetSimTime();
+#else
+  gazebo::common::Time curTime = this->dataPtr->model->GetWorld()->SimTime();
+#endif
 
   // Update the control surfaces and publish the new state.
   if (curTime > this->dataPtr->lastControllerUpdateTime)
@@ -749,8 +752,11 @@ void ArduCopterPlugin::SendState() const
   // send_fdm
   fdmPacket pkt;
 
+#if GAZEBO_MAJOR_VERSION < 9
   pkt.timestamp = this->dataPtr->model->GetWorld()->GetSimTime().Double();
-
+#else
+  pkt.timestamp = this->dataPtr->model->GetWorld()->SimTime().Double();
+#endif 
   // asssumed that the imu orientation is:
   //   x forward
   //   y right
@@ -798,8 +804,13 @@ void ArduCopterPlugin::SendState() const
 
   // model world pose brings us to model, x-forward, y-left, z-up
   // adding gazeboToNED gets us to the x-forward, y-right, z-down
+  #if GAZEBO_MAJOR_VERSION < 9
   ignition::math::Pose3d worldToModel = gazeboToNED +
     this->dataPtr->model->GetWorldPose().Ign();
+  #else 
+  ignition::math::Pose3d worldToModel = gazeboToNED +
+    this->dataPtr->model->WorldPose();
+  #endif 
 
   // get transform from world NED to Model frame
   ignition::math::Pose3d NEDToModel = worldToModel - gazeboToNED;
@@ -829,8 +840,13 @@ void ArduCopterPlugin::SendState() const
   // Get NED velocity in body frame *
   // or...
   // Get model velocity in NED frame
+  #if GAZEBO_MAJOR_VERSION < 9
   ignition::math::Vector3d velGazeboWorldFrame =
     this->dataPtr->model->GetLink()->GetWorldLinearVel().Ign();
+  #else
+  ignition::math::Vector3d velGazeboWorldFrame =
+    this->dataPtr->model->GetLink()->WorldLinearVel();
+  #endif 
   ignition::math::Vector3d velNEDFrame =
     gazeboToNED.Rot().RotateVectorReverse(velGazeboWorldFrame);
   pkt.velocityXYZ[0] = velNEDFrame.X();

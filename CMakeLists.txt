@@ -137,11 +137,15 @@ link_directories(
 set (plugins_single_header
         ArduPilotPlugin
         ArduCopterIRLockPlugin
+        ArduPilotTeraRangerEvoPlugin
         GimbalSmall2dPlugin
         )
 
 add_library(ArduCopterIRLockPlugin SHARED src/ArduCopterIRLockPlugin.cc)
 target_link_libraries(ArduCopterIRLockPlugin ${GAZEBO_LIBRARIES})
+
+add_library(ArduPilotTeraRangerEvoPlugin SHARED src/ArduPilotTeraRangerEvoPlugin.cc)
+target_link_libraries(ArduPilotTeraRangerEvoPlugin ${GAZEBO_LIBRARIES})
 
 add_library(ArduPilotPlugin SHARED src/ArduPilotPlugin.cc)
 target_link_libraries(ArduPilotPlugin ${GAZEBO_LIBRARIES})
@@ -153,6 +157,7 @@ if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
 endif()
 
 install(TARGETS ArduCopterIRLockPlugin DESTINATION ${GAZEBO_PLUGIN_PATH})
+install(TARGETS ArduPilotTeraRangerEvoPlugin DESTINATION ${GAZEBO_PLUGIN_PATH})
 install(TARGETS ArduPilotPlugin DESTINATION ${GAZEBO_PLUGIN_PATH})
 
 install(DIRECTORY models DESTINATION ${GAZEBO_MODEL_PATH}/..)

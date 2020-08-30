@@ -100,7 +100,7 @@ LOITER> mode LAND
             </script>
           </material>
         </visual>
-
+<!-- 
         <visual name="grass">
           <pose>0 0 -0.1 0 0 0</pose>
           <cast_shadows>false</cast_shadows>
@@ -116,7 +116,7 @@ LOITER> mode LAND
               <name>Gazebo/Grass</name>
             </script>
           </material>
-        </visual>
+        </visual> -->
 
       </link>
     </model>

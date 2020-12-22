@@ -1,0 +1,21 @@
+material Gazebo/BeachSand
+{
+  receive_shadows on
+  technique
+  {
+    pass
+    {
+      ambient 0.6 0.6 0.6 1.0
+      diffuse 0.6 0.6 0.6 1.0
+      specular 0.2 0.2 0.2 1.0 12.5
+
+      texture_unit
+      {
+        texture ../textures/beach_sand.jpg
+        filtering bilinear
+        max_anisotropy 16
+        scale 0.001 0.001
+      }
+    }
+  }
+}

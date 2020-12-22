@@ -157,6 +157,7 @@ install(TARGETS ArduPilotPlugin DESTINATION ${GAZEBO_PLUGIN_PATH})
 
 install(DIRECTORY models DESTINATION ${GAZEBO_MODEL_PATH}/..)
 install(DIRECTORY worlds DESTINATION ${GAZEBO_MODEL_PATH}/..)
+install(DIRECTORY media DESTINATION ${GAZEBO_MEDIA_PATH}/..)
 
 # uninstall target
 if(NOT TARGET uninstall)

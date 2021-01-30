@@ -146,12 +146,14 @@
             <lower>-1.04719755</lower>
             <upper>1.04719755</upper>
         </limit>
+        <dynamics>
+          <friction>0.0001</friction>
+        </dynamics>        
       </axis>
     </joint>        
 
 
-    <!--    
-    <link name='tilt_link'>
+    <link name='camera_link'>
       <inertial>
         <mass>0.01</mass>
         <inertia>
@@ -162,8 +164,9 @@
           <iyz>0</iyz>
           <izz>1e-05</izz>
         </inertia>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose frame=''>0.00 0.00 0.025 0 -0 0</pose>
       </inertial>
+
       <sensor name='camera' type='camera'>
         <pose frame=''>0 0 0 -1.57 -1.57 0</pose>
         <camera name='__default__'>
@@ -181,6 +184,7 @@
         <update_rate>10</update_rate>
         <visualize>1</visualize>
       </sensor>
+
       <self_collide>0</self_collide>
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
@@ -335,39 +339,24 @@
       </collision>
     </link>
 
-    <joint name='tilt_joint' type='revolute'>
-      <parent>roll_link</parent>
-      <child>tilt_link</child>
-      <pose frame=''>0 0 0.02 0 -0 0</pose>
+    <joint name="tilt_joint" type="revolute">
+      <parent>roll_arm_link</parent>
+      <child>camera_link</child>
+      <pose>0.037 0.002 0.018 0 0 0</pose>
       <axis>
         <xyz>1 0 0</xyz>
         <use_parent_model_frame>1</use_parent_model_frame>
         <limit>
-          <lower>-1e+16</lower>
-          <upper>1e+16</upper>
-          <effort>10</effort>
-          <velocity>-1</velocity>
+          <lower>-1.74532925</lower>
+          <upper>1.74532925</upper>
         </limit>
         <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-          <damping>0.5</damping>
-          <friction>0</friction>
+          <friction>0.0001</friction>
         </dynamics>
       </axis>
-      <physics>
-        <ode>
-          <limit>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </limit>
-          <suspension>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </suspension>
-        </ode>
-      </physics>
     </joint>
+
+  <!--
     <static>0</static>
     <allow_auto_disable>1</allow_auto_disable>
     <plugin name='gimbal_small_3d_plugin' filename='libGimbalSmall2dPlugin.so'>

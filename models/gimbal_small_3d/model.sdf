@@ -1,8 +1,9 @@
 <?xml version='1.0'?>
 <sdf version='1.6' xmlns:xacro='http://ros.org/wiki/xacro'>
   <model name='gimbal_small_3d'>
-    <pose>0 0 0.18 0 0 0</pose>
+    <pose>0 0.2 0.18 0 0 0</pose>
     <link name='base_link'>
+      <pose>0 0 0 0 0 0</pose>
       <inertial>
         <mass>0.2</mass>
         <inertia>
@@ -13,12 +14,11 @@
           <iyz>0</iyz>
           <izz>0.0001</izz>
         </inertia>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose frame=''>0.01 0.06 0 0 0 0</pose>
       </inertial>
       <self_collide>0</self_collide>
       <enable_wind>0</enable_wind>
       <kinematic>0</kinematic>
-      <pose frame=''>0 0 0 0 -0 0</pose>
       <visual name='base_main_viz'>
         <geometry>
           <mesh>
@@ -40,7 +40,7 @@
       <collision name='base_col'>
         <laser_retro>0</laser_retro>
         <max_contacts>10</max_contacts>
-        <pose frame=''>0.01 0.075 -0.025 0 -0 0</pose>
+        <pose>0.01 0.075 -0.025 0 -0 0</pose>
         <geometry>
           <box>
             <size>0.1 0.05 0.15</size>
@@ -93,9 +93,11 @@
         </surface>
       </collision>
     </link>
-    <!--
-    <link name='roll_link'>
+
+    <link name="roll_arm_link">
+      <pose>0.03 0.005 0.00 0 0 0</pose>
       <inertial>
+        <pose>0.005 0 0.02 0 0 0</pose>
         <mass>0.01</mass>
         <inertia>
           <ixx>1e-05</ixx>
@@ -105,13 +107,8 @@
           <iyz>0</iyz>
           <izz>1e-05</izz>
         </inertia>
-        <pose frame=''>0 0 0 0 -0 0</pose>
-      </inertial>
-      <self_collide>0</self_collide>
-      <enable_wind>0</enable_wind>
-      <kinematic>0</kinematic>
-      <pose frame=''>0 0 0 0 -0 0</pose>
-      <visual name='base_arm_viz'>
+      </inertial>        
+      <visual name='roll_arm_viz'>
         <geometry>
           <mesh>
             <scale>0.001 0.001 0.001</scale>
@@ -125,67 +122,35 @@
           </script>
           <shader type='pixel'/>
         </material>
-        <pose frame=''>0 0 0 0 -0 0</pose>
+        <pose frame=''>-0.03 -0.005 0 0 0 0</pose>
         <transparency>0</transparency>
         <cast_shadows>1</cast_shadows>
       </visual>
-      <collision name='roll_col'>
-        <laser_retro>0</laser_retro>
-        <max_contacts>10</max_contacts>
-        <pose frame=''>0 0 -0.005 0 -0 0</pose>
+      <collision name="roll_arm_col">
+        <pose>0 0 0 0 0 0</pose>
         <geometry>
-          <mesh>
-            <uri>model://gimbal_small_3d/meshes/base_arm.dae</uri>
-            <scale>0.001 0.001 0.001</scale>
-          </mesh>
+          <box>
+           <size>0.07 0.03 0.08</size> 
+         </box>
         </geometry>
-        <surface>
-          <friction>
-            <ode>
-              <mu>1</mu>
-              <mu2>1</mu2>
-              <fdir1>0 0 0</fdir1>
-              <slip1>0</slip1>
-              <slip2>0</slip2>
-            </ode>
-            <torsional>
-              <coefficient>1</coefficient>
-              <patch_radius>0</patch_radius>
-              <surface_radius>0</surface_radius>
-              <use_patch_radius>1</use_patch_radius>
-              <ode>
-                <slip>0</slip>
-              </ode>
-            </torsional>
-          </friction>
-          <bounce>
-            <restitution_coefficient>0</restitution_coefficient>
-            <threshold>1e+06</threshold>
-          </bounce>
-          <contact>
-            <collide_without_contact>0</collide_without_contact>
-            <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
-            <collide_bitmask>1</collide_bitmask>
-            <ode>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
-              <max_vel>0.01</max_vel>
-              <min_depth>0</min_depth>
-            </ode>
-            <bullet>
-              <split_impulse>1</split_impulse>
-              <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
-              <soft_cfm>0</soft_cfm>
-              <soft_erp>0.2</soft_erp>
-              <kp>1e+13</kp>
-              <kd>1</kd>
-            </bullet>
-          </contact>
-        </surface>
       </collision>
-    </link>
+    </link>    
+
+   <joint name="roll_joint" type="revolute">
+      <parent>base_link</parent>
+      <child>roll_arm_link</child>
+      <pose>-0.019 -0.002 -0.036 0 0 0</pose>
+      <axis>
+        <xyz>0 1 0</xyz>
+        <limit>
+            <lower>-1.04719755</lower>
+            <upper>1.04719755</upper>
+        </limit>
+      </axis>
+    </joint>        
+
+
+    <!--    
     <link name='tilt_link'>
       <inertial>
         <mass>0.01</mass>
@@ -369,39 +334,7 @@
         </surface>
       </collision>
     </link>
-    <joint name='roll_joint' type='revolute'>
-      <parent>base_link</parent>
-      <child>roll_link</child>
-      <pose frame=''>0.011 0.003 -0.0345 0 -0 0</pose>
-      <axis>
-        <xyz>0 1 0</xyz>
-        <use_parent_model_frame>1</use_parent_model_frame>
-        <limit>
-          <lower>-1e+16</lower>
-          <upper>1e+16</upper>
-          <effort>10</effort>
-          <velocity>-1</velocity>
-        </limit>
-        <dynamics>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
-          <damping>0.5</damping>
-          <friction>0</friction>
-        </dynamics>
-      </axis>
-      <physics>
-        <ode>
-          <limit>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </limit>
-          <suspension>
-            <cfm>0</cfm>
-            <erp>0.2</erp>
-          </suspension>
-        </ode>
-      </physics>
-    </joint>
+
     <joint name='tilt_joint' type='revolute'>
       <parent>roll_link</parent>
       <child>tilt_link</child>

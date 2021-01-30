@@ -13,6 +13,7 @@
     <joint name="iris_gimbal_mount" type="revolute">
       <parent>iris::base_link</parent>
       <child>gimbal_small_3d::base_link</child>
+      <pose frame=''>0.01 0.06 0 0 0 0</pose>
       <axis>
         <xyz>0 0 -1</xyz>
         <limit>

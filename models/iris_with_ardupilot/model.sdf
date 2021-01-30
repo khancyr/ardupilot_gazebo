@@ -6,21 +6,30 @@
     </include>
 
     <include>
-      <uri>model://gimbal_small_2d</uri>
+      <uri>model://gimbal_small_3d</uri>
       <pose>0 -0.01 0.070 1.57 0 1.57</pose>
     </include>
 
     <joint name="iris_gimbal_mount" type="revolute">
       <parent>iris::base_link</parent>
-      <child>gimbal_small_2d::base_link</child>
+      <child>gimbal_small_3d::base_link</child>
       <axis>
+        <xyz>0 0 -1</xyz>
         <limit>
-          <lower>0</lower>
-          <upper>0</upper>
+          <lower>-1.74533</lower>
+          <upper>1.74533</upper>
         </limit>
-        <xyz>0 0 1</xyz>
-        <use_parent_model_frame>true</use_parent_model_frame>
+        <dynamics>
+          <damping>0.004</damping>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+        </ode>
+      </physics>
+
     </joint>
     <!-- visual markers for debugging
     <link name="rotor_0_blade_1_cp">
@@ -585,6 +594,60 @@
         <cmd_min>-2.5</cmd_min>
         <jointName>iris::rotor_3_joint</jointName>
         <multiplier>-838</multiplier>
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+      </control>
+
+      <!-- Gimbal channels -->
+      <control channel="9">
+        <!--
+          TILT Joint, built int the gimbal config
+          -->
+        <type>POSITION</type>
+        <useForce>0</useForce>
+        <offset>-0.1</offset>
+        <p_gain>0.20</p_gain>
+        <i_gain>0.40</i_gain>
+        <d_gain>0.10</d_gain>
+        <i_max>0</i_max>
+        <i_min>0</i_min>
+        <cmd_max>7.5</cmd_max>
+        <cmd_min>-7.5</cmd_min>
+        <jointName>gimbal_small_3d::tilt_joint</jointName>
+        <multiplier>1.9634</multiplier><!-- 2*pi/(0.9 - 0.1) -->
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+      </control>
+      <!--
+      <control channel="10">
+        ROLL Joint, the link between the two models
+        <type>POSITION</type>
+        <offset>0</offset>
+        <p_gain>0.20</p_gain>
+        <i_gain>0</i_gain>
+        <d_gain>0</d_gain>
+        <i_max>0</i_max>
+        <i_min>0</i_min>
+        <cmd_max>2.5</cmd_max>
+        <cmd_min>-2.5</cmd_min>
+        <jointName>iris_gimbal_mount</jointName>
+        <multiplier>1</multiplier>
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+      </control>
+      -->
+      <control channel="11">
+        <!--
+          TILT Joint, built int the gimbal config
+          -->
+        <type>POSITION</type>
+        <offset>0</offset>
+        <p_gain>0.20</p_gain>
+        <i_gain>0</i_gain>
+        <d_gain>0</d_gain>
+        <i_max>0</i_max>
+        <i_min>0</i_min>
+        <cmd_max>2.5</cmd_max>
+        <cmd_min>-2.5</cmd_min>
+        <jointName>iris_gimbal_mount</jointName>
+        <multiplier>1</multiplier>
         <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
       </control>
     </plugin>

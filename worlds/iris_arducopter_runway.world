@@ -84,6 +84,13 @@
       </link>
     </model>
 
+    <model name="water_tower">
+      <pose>100 100 0 0 0 0</pose>
+      <include>
+        <uri>model://water_tower</uri>
+      </include>
+    </model>
+
     <model name="iris_demo">
       <include>
         <uri>model://iris_with_ardupilot</uri>

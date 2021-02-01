@@ -85,11 +85,43 @@
     </model>
 
     <model name="water_tower">
-      <pose>124.155 -57.533 0 0 0 0</pose>
+      <pose>125 -60 0 0 0 0</pose>
       <include>
         <uri>model://water_tower</uri>
       </include>
     </model>
+
+    <model name='number1'>
+      <pose>100 -100 0 0 0 0</pose>
+      <static>1</static>
+      <include>
+        <uri>model://number1</uri>
+      </include>
+   </model>
+
+    <model name='number2'>
+      <pose>150 -200 0 0 0 0</pose>
+      <static>1</static>
+      <include>
+        <uri>model://number2</uri>
+      </include>
+   </model>
+
+    <model name='number3'>
+      <pose>200 -250 10 0 0 0</pose>
+      <static>1</static>
+      <include>
+        <uri>model://number3</uri>
+      </include>
+   </model>
+
+    <model name='number4'>
+      <pose>300 -300 20 0 0 0</pose>
+      <static>1</static>
+      <include>
+        <uri>model://number4</uri>
+      </include>
+   </model>
 
     <model name="iris_demo">
       <include>

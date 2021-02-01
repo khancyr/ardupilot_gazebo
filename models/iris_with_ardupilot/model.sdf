@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<sdf version="1.6" xmlns:xacro='http://ros.org/wiki/xacro'>
+<sdf version="1.6">
   <model name="iris_demo">
     <include>
       <uri>model://iris_with_standoffs</uri>
@@ -17,8 +17,9 @@
       <axis>
         <xyz>0 0 -1</xyz>
         <limit>
-          <lower>-1.74533</lower>
-          <upper>1.74533</upper>
+          <!-- -180 to 180 degrees -->
+          <lower>-3.14159265</lower>
+          <upper>3.14159265</upper>
         </limit>
         <dynamics>
           <damping>0.004</damping>
@@ -604,21 +605,21 @@
           SERVO10
           TILT Joint, built in the gimbal model
           joint_name: tilt_joint
-          lower_limit: -1.04719755 (-60°)
-          upper_limit: 1.04719755  (60°)
+          lower_limit: -1.74532925 (-100°)
+          upper_limit: 1.74532925  (100°)
           -->
         <type>POSITION</type>
         <jointName>gimbal_small_3d::tilt_joint</jointName>
         <useForce>1</useForce>
         <offset>-0.5</offset>
-        <multiplier>2.6180</multiplier>
-        <p_gain>0.20</p_gain>
-        <i_gain>0</i_gain>
-        <d_gain>0</d_gain>
-        <i_max>0</i_max>
-        <i_min>0</i_min>
-        <cmd_max>2.5</cmd_max>
-        <cmd_min>-2.5</cmd_min>
+        <multiplier>4.3633</multiplier>
+        <p_gain>0.10</p_gain>
+        <i_gain>0.02</i_gain>
+        <d_gain>0.02</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>5</cmd_max>
+        <cmd_min>-5</cmd_min>
         <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
       </control>
       <control channel="10">
@@ -634,13 +635,13 @@
         <useForce>1</useForce>
         <offset>-0.5</offset>
         <multiplier>1.9635</multiplier>
-        <p_gain>0.20</p_gain>
-        <i_gain>0</i_gain>
-        <d_gain>0</d_gain>
-        <i_max>0</i_max>
-        <i_min>0</i_min>
-        <cmd_max>2.5</cmd_max>
-        <cmd_min>-2.5</cmd_min>
+        <p_gain>0.10</p_gain>
+        <i_gain>0.02</i_gain>
+        <d_gain>0.02</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>5</cmd_max>
+        <cmd_min>-5</cmd_min>
         <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
       </control>
       <control channel="11">
@@ -648,21 +649,21 @@
           SERVO12
           PAN Joint, link between body and gimbal
           joint_name: iris_gimbal_mount
-          lower_limit: -1.74532925 (-100°)
-          upper_limit: 1.74532925  (100°)
+          lower_limit: -3.14159265 (-180°)
+          upper_limit: 3.14159265  (180°)
           -->
         <type>POSITION</type>
         <jointName>iris_gimbal_mount</jointName>
         <useForce>1</useForce>
         <offset>-0.5</offset>
-        <multiplier>4.3633</multiplier>
-        <p_gain>0.20</p_gain>
-        <i_gain>0</i_gain>
-        <d_gain>0</d_gain>
-        <i_max>0</i_max>
-        <i_min>0</i_min>
-        <cmd_max>2.5</cmd_max>
-        <cmd_min>-2.5</cmd_min>
+        <multiplier>7,8540</multiplier>
+        <p_gain>0.10</p_gain>
+        <i_gain>0.02</i_gain>
+        <d_gain>0.02</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>5</cmd_max>
+        <cmd_min>-5</cmd_min>
         <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
       </control>
     </plugin>

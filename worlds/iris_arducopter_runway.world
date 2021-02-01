@@ -85,7 +85,7 @@
     </model>
 
     <model name="water_tower">
-      <pose>100 100 0 0 0 0</pose>
+      <pose>124.155 -57.533 0 0 0 0</pose>
       <include>
         <uri>model://water_tower</uri>
       </include>

@@ -1,5 +1,5 @@
 <?xml version='1.0'?>
-<sdf version='1.6' xmlns:xacro='http://ros.org/wiki/xacro'>
+<sdf version='1.6'>
   <model name='gimbal_small_3d'>
     <pose>0 0.2 0.18 0 0 0</pose>
     <link name='base_link'>
@@ -106,8 +106,9 @@
       <axis>
         <xyz>0 1 0</xyz>
         <limit>
-            <lower>-1.04719755</lower>
-            <upper>1.04719755</upper>
+            <!-- -45 to 45 degrees -->
+            <lower>-0.785398163</lower>
+            <upper>0.785398163</upper>
         </limit>
         <dynamics>
           <friction>0.0001</friction>
@@ -233,9 +234,10 @@
       <child>camera_link</child>
       <pose>0.037 0.002 0.018 0 0 0</pose>
       <axis>
-        <xyz>-1 0 0</xyz>
+        <xyz>1 0 0</xyz>
         <use_parent_model_frame>1</use_parent_model_frame>
         <limit>
+          <!-- -100 to 100 degrees -->
           <lower>-1.74532925</lower>
           <upper>1.74532925</upper>
         </limit>

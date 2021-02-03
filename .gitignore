@@ -95,3 +95,6 @@ cmake-build-debug
 
 # Catkin custom files
 CATKIN_IGNORE
+
+# Ignore mercurial config directory
+.hg

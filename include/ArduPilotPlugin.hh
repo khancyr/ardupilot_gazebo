@@ -91,6 +91,15 @@ namespace gazebo
 
     /// \brief transform from world frame to NED frame
     private: ignition::math::Pose3d gazeboXYZToNED;
+
+    /// \bried find the sensors by name and cast to type
+    private: sensors::CameraSensorPtr findCameraSensorByName(const std::string& cameraName);
+    private: sensors::ImuSensorPtr findImuSensorByName(const std::string& imuName);
+    private: sensors::GpsSensorPtr findGpsSensorByName(const std::string& gpsName);
+    private: sensors::RaySensorPtr findRaySensorByName(const std::string& rayName);
+
+    /// \brief find a sensor by name
+    private: sensors::SensorPtr findSensorByName(const std::string& sensorName);
   };
 }
 #endif

@@ -534,6 +534,7 @@
       <modelXYZToAirplaneXForwardZDown>0 0 0 3.141593 0 0</modelXYZToAirplaneXForwardZDown>
       <gazeboXYZToNED>0 0 0 3.141593 0 0</gazeboXYZToNED>
       <imuName>iris_demo::iris::iris/imu_link::imu_sensor</imuName>
+      <cameraName>iris_demo::gimbal_small_3d::camera_link::camera</cameraName>
       <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
       <control channel="0">
       <!--
@@ -665,6 +666,15 @@
         <cmd_max>5</cmd_max>
         <cmd_min>-5</cmd_min>
         <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+      </control>
+
+      <!-- Camera control -->
+      <control channel="12">
+        <!-- SERVO13
+             Trigger a servo attached camera
+        -->
+        <type>TRIGGER</type>
+        <triggerName>camera_shutter</triggerName>
       </control>
     </plugin>
 

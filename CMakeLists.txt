@@ -17,6 +17,9 @@ else()
     message("Gazebo version: ${GAZEBO_VERSION}")
 endif()
 
+# RapidJSON is a header only library
+find_package(RapidJSON REQUIRED)
+
 ###### COMPILE RULES ######
 include(CheckCXXCompilerFlag)
 
@@ -121,18 +124,19 @@ set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${VALID_CXX_FLAGS} ${UNFILTERED_FLAGS}"
 ###########
 
 include_directories(
-        ${PROJECT_SOURCE_DIR}
-        include
-        ${GAZEBO_INCLUDE_DIRS}
-        )
+    ${PROJECT_SOURCE_DIR}
+    include
+    ${GAZEBO_INCLUDE_DIRS}
+    ${RAPIDJSON_INCLUDE_DIRS}
+)
 
 link_libraries(
-        ${GAZEBO_LIBRARIES}
-        )
+    ${GAZEBO_LIBRARIES}
+)
 
 link_directories(
-        ${GAZEBO_LIBRARY_DIRS}
-        )
+    ${GAZEBO_LIBRARY_DIRS}
+)
 
 set (plugins_single_header
         ArduPilotPlugin
@@ -143,8 +147,21 @@ set (plugins_single_header
 add_library(ArduCopterIRLockPlugin SHARED src/ArduCopterIRLockPlugin.cc)
 target_link_libraries(ArduCopterIRLockPlugin ${GAZEBO_LIBRARIES})
 
-add_library(ArduPilotPlugin SHARED src/ArduPilotPlugin.cc)
+add_library(ArduPilotPlugin
+    SHARED
+    src/ArduPilotPlugin.cc
+    src/Socket.cpp
+)
 target_link_libraries(ArduPilotPlugin ${GAZEBO_LIBRARIES})
+
+add_executable(RapidJsonExample
+    src/RapidJsonExample.cc
+)
+
+add_executable(SocketExample
+    src/SocketExample.cc
+    src/Socket.cpp
+)
 
 if("${GAZEBO_VERSION}" VERSION_LESS "8.0")
     add_library(GimbalSmall2dPlugin SHARED src/GimbalSmall2dPlugin.cc)

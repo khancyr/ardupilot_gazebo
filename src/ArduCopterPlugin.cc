@@ -315,10 +315,10 @@ class gazebo::ArduCopterPluginPrivate
   public: std::string listen_addr;
 
   /// \brief Ardupilot port for receiver socket
-  public: uint16_t fdm_port_in;
+  public: unsigned fdm_port_in;
 
   /// \brief Ardupilot port for sender socket  
-  public: uint16_t fdm_port_out;
+  public: unsigned fdm_port_out;
 
   /// \brief Pointer to an IMU sensor
   public: sensors::ImuSensorPtr imuSensor;
@@ -589,9 +589,9 @@ bool ArduCopterPlugin::InitArduCopterSockets(sdf::ElementPtr _sdf) const
             this->dataPtr->fdm_addr, "127.0.0.1");
     getSdfParam<std::string>(_sdf, "listen_addr",
             this->dataPtr->listen_addr, "127.0.0.1");
-    getSdfParam<uint16_t>(_sdf, "fdm_port_in",
+    getSdfParam<unsigned>(_sdf, "fdm_port_in",
             this->dataPtr->fdm_port_in, 9002);
-    getSdfParam<uint16_t>(_sdf, "fdm_port_out",
+    getSdfParam<unsigned>(_sdf, "fdm_port_out",
             this->dataPtr->fdm_port_out, 9003);
 
     if (!this->dataPtr->socket_in.Bind(this->dataPtr->listen_addr.c_str(),

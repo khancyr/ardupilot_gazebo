@@ -98,7 +98,7 @@ namespace gazebo
     public: std::string irlock_addr;
 
     /// \brief Irlock port for receiver socket
-    public: uint16_t irlock_port;
+    public: unsigned irlock_port;
 
     public: int handle;
 
@@ -195,7 +195,7 @@ void ArduCopterIRLockPlugin::Load(sensors::SensorPtr _sensor,
   }
   getSdfParam<std::string>(_sdf, "irlock_addr",
       this->dataPtr->irlock_addr, "127.0.0.1");
-  getSdfParam<uint16_t>(_sdf, "irlock_port",
+  getSdfParam<unsigned>(_sdf, "irlock_port",
       this->dataPtr->irlock_port, 9005);
 
   this->dataPtr->parentSensor->SetActive(true);

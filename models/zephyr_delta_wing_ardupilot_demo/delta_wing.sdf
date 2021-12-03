@@ -157,7 +157,7 @@
         <cmd_min>0.0</cmd_min>
         <jointName>zephyr_delta_wing::propeller_joint</jointName>
       </control>
-      <control channel="1">
+      <control channel="0">
         <multiplier>-1</multiplier>
         <offset>-0.5</offset>
         <type>POSITION</type>
@@ -170,7 +170,7 @@
         <cmd_min>-2.0</cmd_min>
         <jointName>zephyr_delta_wing::flap_left_joint</jointName>
       </control>
-      <control channel="0">
+      <control channel="1">
         <multiplier>-1</multiplier>
         <offset>-0.5</offset>
         <type>POSITION</type>

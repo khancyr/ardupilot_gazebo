@@ -133,3 +133,19 @@ example : for SITL default location
     </spherical_coordinates>
 ````
 Rangefinder
+
+
+### Gimbal
+
+The following parameters need to be set on the model in ArduPilot
+
+| MNT_ANGMAX_PAN |  17999 |
+| MNT_ANGMIN_PAN | -18000 |
+| MNT_ANGMAX_ROL |   4500 |
+| MNT_ANGMIN_ROL |  -4500 |
+| MNT_ANGMAX_TIL |  10000 |
+| MNT_ANGMIN_TIL | -10000 |
+| MNT_RC_IN_PAN  |   RC12 |
+| MNT_RC_IN_ROLL |   RC11 |
+| MNT_RC_IN_TILT |   RC10 |
+| MNT_TYPE       |  Servo |

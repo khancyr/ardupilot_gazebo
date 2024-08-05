@@ -1,3 +1,5 @@
+# Deprecated : please use https://github.com/ArduPilot/ardupilot_gazebo
+
 # Ardupilot Gazebo plugin 
 
 ## Requirements :

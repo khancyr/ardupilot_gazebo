@@ -119,8 +119,11 @@ class Control
     this->pid.Init(0.1, 0, 0, 0, 0, 1.0, -1.0);
   }
 
-  /// \brief copy constructor
-  public: Control& operator=(const Control& source) = default;
+  /// \brief explicit copy constructor
+  public: Control(const Control& source) :
+          rotorVelocitySlowdownSim(source.rotorVelocitySlowdownSim),
+          frequencyCutoff(source.frequencyCutoff),
+          samplingRate(source.samplingRate) {}
 
   /// \brief control id / channel
   public: int channel = 0;

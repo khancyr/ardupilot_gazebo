@@ -6,21 +6,32 @@
     </include>
 
     <include>
-      <uri>model://gimbal_small_2d</uri>
+      <uri>model://gimbal_small_3d</uri>
       <pose>0 -0.01 0.070 1.57 0 1.57</pose>
     </include>
 
     <joint name="iris_gimbal_mount" type="revolute">
       <parent>iris::base_link</parent>
-      <child>gimbal_small_2d::base_link</child>
+      <child>gimbal_small_3d::base_link</child>
+      <pose frame=''>0.01 0.06 0 0 0 0</pose>
       <axis>
+        <xyz>0 0 -1</xyz>
         <limit>
-          <lower>0</lower>
-          <upper>0</upper>
+          <!-- -180 to 180 degrees -->
+          <lower>-3.14159265</lower>
+          <upper>3.14159265</upper>
         </limit>
-        <xyz>0 0 1</xyz>
-        <use_parent_model_frame>true</use_parent_model_frame>
+        <dynamics>
+          <damping>0.004</damping>
+        </dynamics>
+        <use_parent_model_frame>1</use_parent_model_frame>
       </axis>
+      <physics>
+        <ode>
+          <implicit_spring_damper>1</implicit_spring_damper>
+        </ode>
+      </physics>
+
     </joint>
     <!-- visual markers for debugging
     <link name="rotor_0_blade_1_cp">
@@ -523,6 +534,7 @@
       <modelXYZToAirplaneXForwardZDown>0 0 0 3.141593 0 0</modelXYZToAirplaneXForwardZDown>
       <gazeboXYZToNED>0 0 0 3.141593 0 0</gazeboXYZToNED>
       <imuName>iris_demo::iris::iris/imu_link::imu_sensor</imuName>
+      <cameraName>iris_demo::gimbal_small_3d::camera_link::camera</cameraName>
       <connectionTimeoutMaxCount>5</connectionTimeoutMaxCount>
       <control channel="0">
       <!--
@@ -586,6 +598,83 @@
         <jointName>iris::rotor_3_joint</jointName>
         <multiplier>-838</multiplier>
         <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+      </control>
+
+      <!-- Gimbal channels -->
+      <control channel="9">
+        <!--
+          SERVO10
+          TILT Joint, built in the gimbal model
+          joint_name: tilt_joint
+          lower_limit: -1.74532925 (-100°)
+          upper_limit: 1.74532925  (100°)
+          -->
+        <type>POSITION</type>
+        <jointName>gimbal_small_3d::tilt_joint</jointName>
+        <useForce>1</useForce>
+        <offset>-0.5</offset>
+        <multiplier>4.3633</multiplier>
+        <p_gain>0.10</p_gain>
+        <i_gain>0.02</i_gain>
+        <d_gain>0.02</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>5</cmd_max>
+        <cmd_min>-5</cmd_min>
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+      </control>
+      <control channel="10">
+        <!--
+          SERVO11
+          ROLL Joint, built in the gimbal model
+          joint_name: roll_joint
+          lower_limit: -0.785398163 (-45°)
+          upper_limit: 0.785398163  (45°)
+          -->
+        <type>POSITION</type>
+        <jointName>gimbal_small_3d::roll_joint</jointName>
+        <useForce>1</useForce>
+        <offset>-0.5</offset>
+        <multiplier>1.9635</multiplier>
+        <p_gain>0.10</p_gain>
+        <i_gain>0.02</i_gain>
+        <d_gain>0.02</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>5</cmd_max>
+        <cmd_min>-5</cmd_min>
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+      </control>
+      <control channel="11">
+        <!--
+          SERVO12
+          PAN Joint, link between body and gimbal
+          joint_name: iris_gimbal_mount
+          lower_limit: -3.14159265 (-180°)
+          upper_limit: 3.14159265  (180°)
+          -->
+        <type>POSITION</type>
+        <jointName>iris_gimbal_mount</jointName>
+        <useForce>1</useForce>
+        <offset>-0.5</offset>
+        <multiplier>7,8540</multiplier>
+        <p_gain>0.10</p_gain>
+        <i_gain>0.02</i_gain>
+        <d_gain>0.02</d_gain>
+        <i_max>1</i_max>
+        <i_min>-1</i_min>
+        <cmd_max>5</cmd_max>
+        <cmd_min>-5</cmd_min>
+        <controlVelocitySlowdownSim>1</controlVelocitySlowdownSim>
+      </control>
+
+      <!-- Camera control -->
+      <control channel="12">
+        <!-- SERVO13
+             Trigger a servo attached camera
+        -->
+        <type>TRIGGER</type>
+        <triggerName>camera_shutter</triggerName>
       </control>
     </plugin>
 
